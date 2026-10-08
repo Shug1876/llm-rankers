@@ -1,0 +1,17 @@
+{
+  "dataset": "miracl/sw",
+  "group": "miracl",
+  "retriever": "e5",
+  "k": 100,
+  "num_queries": 482,
+  "num_eval_queries": 482,
+  "metrics": {
+    "nDCG@10": 0.7127538509022464,
+    "R@100": 0.9561845485082
+  },
+  "model": "intfloat/multilingual-e5-base",
+  "index": "/mnt/scratch/users/3148123l/llm-rankers/retrievers/index/e5-multilingual-e5-base/miracl_sw.flex",
+  "search": "exact (torch-fp16-gpu)",
+  "seconds_index_or_load": 50.6,
+  "seconds_search": 0.1
+}

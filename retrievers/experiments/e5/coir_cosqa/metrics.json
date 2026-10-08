@@ -1,0 +1,17 @@
+{
+  "dataset": "coir/cosqa",
+  "group": "coir",
+  "retriever": "e5",
+  "k": 100,
+  "num_queries": 500,
+  "num_eval_queries": 500,
+  "metrics": {
+    "nDCG@10": 0.32391573111002875,
+    "R@100": 0.904
+  },
+  "model": "intfloat/e5-base-v2",
+  "index": "/mnt/scratch/users/3148123l/llm-rankers/retrievers/index/e5-e5-base-v2/coir_cosqa.flex",
+  "search": "exact (torch-fp16-gpu)",
+  "seconds_index_or_load": 10.2,
+  "seconds_search": 0.1
+}
