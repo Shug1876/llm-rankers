@@ -62,6 +62,33 @@ def choice(instructions, criteria: Dict[str, object]):
 def score(instructions, levels: List[object]):
     return {"type": "score", "instructions": instructions, "criteria": list(levels)}
 
+TREC_DL_LABELS = (0, 1, 2, 3)
+
+# Idea 1. Softmax over TREC DL label probabilities, then compute P(label=max) / sum_i!=max P(label=i) as a score.
+#       - trec_label_probs then prob_score
+
+def trec_label_probs(probs):
+    """P(rel(d)=i | q) for the four TREC DL labels, renormalised to sum to 1 over those labels.
+    The API already returns a softmax; renormalising matters for provider 'local', whose score
+    head has 6 levels (0-5), so mass on levels 4-5 is dropped."""
+    p = [max(0.0, float(probs.get(str(i), 0.0))) for i in TREC_DL_LABELS]
+    total = sum(p)
+    if total <= 0:
+        return [1.0 / len(p)] * len(p)
+    return [x / total for x in p]
+
+
+def prob_score(p, eps=1e-6):
+    """P(label = max) / sum of P(label = i) over i != max, where max = argmax_i P(label = i)."""
+    m = max(range(len(p)), key=lambda i: p[i])   # ties go to the lowest label
+    rest = sum(p) - p[m]
+    return p[m] / max(rest, eps)                 # eps avoids dividing by zero when p[max] == 1.0
+
+# Idea 2: DCG gain (gives more weight to higher labels)
+
+def log_score(p):
+    """sum_i (2^i - 1) * P(label = i): expected gain with gains 0, 1, 3, 7."""
+    return sum((2 ** i - 1) * x for i, x in enumerate(p))
 
 # TREC DL passage relevance scale, lowest level first.
 TREC_DL_GRADED_LEVELS = [
