@@ -248,6 +248,95 @@ One method at a time (same two-level CLI as `../run.py`):
 .venv/bin/python jev/eval_run.py --dataset msmarco-passage/trec-dl-2019/judged jev/runs/bm25/run.rank_llm.bm25.dl19.top100.txt jev/runs/jev/dl19.*.txt
 ```
 
+### Open model: JEV-9B on a local GPU (`--provider local`)
+
+[autotrust/JEV-9B](https://huggingface.co/autotrust/JEV-9B) is an open Qwen3.5-9B LoRA distilled from Jev 1.13 (the model
+card reports a mean KL of about 0.02 to the teacher's distributions). `serve_jev9b.sbatch` serves it with
+`vllm==0.31.0` on one L40S of the cognition cluster (the IDA cluster's drivers are too old). `--provider local` sends
+one `/v1/completions` read-out per question through the `jev-decision` LoRA and applies the head bias and temperature
+from the model directory, as the model card's `decide()` does. There is no API cost.
+
+```bash
+sbatch jev/serve_jev9b.sbatch                  # one-time setup in the script header; ready after a few minutes
+export JEV_LOCAL_URL=$(cat jev/logs/jev9b.endpoint) JEV_MODEL_DIR=/mnt/scratch/users/3148123l/models/JEV-9B
+python jev/check_access.py --provider local
+python jev/run_jev.py run --provider local --max_rps 0 ... pointwise --method score
+```
+
+Two differences from the hosted API: `score` is always on the model's 0–5 scale (the rubric levels are written into
+the question as `0 = …; 1 = …`, and ranking uses the expected value), and `choice` takes at most 16 options. That
+rules out listwise `--mode choice` with windows of 20 or 100; setwise with `--num_child 10` (11 options) fits.
+
+#### JEV-9B results next to published rerankers
+
+nDCG@10, every system re-ranks the same pyserini BM25 top-100 (DL19 0.506, DL20 0.480). JEV-9B and hosted Jev rows are
+single zero-shot runs from this folder (`run_local_dl.sh`, `jev/runs/local9b/`; hosted numbers from the table above);
+the other rows are copied from the papers: [S] Setwise, Zhuang et al., SIGIR 2024, Tables 2 & 4; [G] RankGPT,
+Sun et al., EMNLP 2023, Table 1; [P] PRP, Qin et al., NAACL 2024 Findings, Table 2; [V] RankVicuna, Pradeep et al.,
+2023, Table 1; [Z] RankZephyr, Pradeep et al., 2023, Table 5; [R] Rank-R1, Zhuang et al., 2025, Table 1.
+*sup.* = fine-tuned on MS MARCO or distilled from GPT-4 rankings; everything else is zero-shot. Bold: best per
+paradigm and dataset.
+
+| Paradigm | System | Backbone | DL19 | DL20 | Source |
+|---|---|---|---|---|---|
+| — | BM25 | – | 0.506 | 0.480 |  |
+| **Pointwise** | monoBERT (*sup.*) | BERT-340M | 0.705 | 0.673 | [G] |
+|  | monoT5 (*sup.*) | T5-3B | 0.718 | 0.689 | [G] |
+|  | RankT5 (*sup.*) | T5-3B | **0.730** | **0.696** | [P] |
+|  | yes/no likelihood | Flan-T5-XL (3B) | 0.650 | 0.636 | [S] |
+|  | relevance generation (RG) | Flan-UL2 (20B) | 0.646 | 0.654 | [P] |
+|  | Jev hosted, `score` | Jev 1.13 (API) | 0.728 | 0.691 | this folder |
+|  | JEV-9B, `score` | Qwen3.5-9B + LoRA | 0.692 | 0.675 | this folder |
+|  | JEV-9B, best prompt (umbrela / cookbook) | Qwen3.5-9B + LoRA | 0.701 | 0.677 | this folder |
+| **Pairwise** | PRP-Allpair (9,900 calls) | Flan-UL2 (20B) | 0.724 | 0.707 | [P] |
+|  | PRP-Sorting (heapsort) | Flan-UL2 (20B) | 0.719 | 0.694 | [P] |
+|  | pairwise heapsort | Flan-T5-XXL (11B) | 0.708 | 0.699 | [S] |
+|  | pairwise heapsort | gpt-3.5-turbo | 0.694 | 0.651 | [S] |
+|  | Jev hosted, heapsort | Jev 1.13 (API) | **0.733** | **0.720** | this folder |
+|  | JEV-9B, heapsort | Qwen3.5-9B + LoRA | 0.731 | 0.698 | this folder |
+| **Setwise** | setwise heapsort | Flan-T5-XL (3B) | 0.693 | 0.678 | [S] |
+|  | setwise heapsort | Flan-T5-XXL (11B) | 0.706 | 0.688 | [S] |
+|  | setwise heapsort | gpt-3.5-turbo | 0.693 | 0.656 | [S] |
+|  | Setwise (*sup.*, SFT) | Qwen2.5-7B | **0.738** | 0.692 | [R] |
+|  | Rank-R1 (GRPO, reasoning) | Qwen2.5-7B | 0.727 | 0.685 | [R] |
+|  | Jev hosted, heapsort c=10 | Jev 1.13 (API) | 0.719 | **0.714** | this folder |
+|  | JEV-9B, heapsort c=10 | Qwen3.5-9B + LoRA | 0.715 | 0.684 | this folder |
+| **Listwise** | listwise likelihood | Flan-T5-XXL (11B) | 0.701 | 0.690 | [S] |
+|  | RankGPT (w20/s10) | gpt-3.5-turbo | 0.658 | 0.629 | [G] |
+|  | RankGPT (w20/s10) | gpt-4 | **0.756** | 0.706 | [G] |
+|  | RankVicuna (*sup.*) | Vicuna-7B | 0.668 | 0.655 | [V] |
+|  | RankZephyr (*sup.*) | Zephyr-7B | 0.742 | **0.709** | [Z] |
+|  | Jev hosted, `score` w20/s10 | Jev 1.13 (API) | 0.737 | **0.709** | this folder |
+|  | JEV-9B, `score` w20/s10 | Qwen3.5-9B + LoRA | 0.692 | 0.695 | this folder |
+|  | JEV-9B, `score` 100-in-1 | Qwen3.5-9B + LoRA | 0.684 | 0.667 | this folder |
+
+JEV-9B's best method (pairwise, 0.731 / 0.698) sits with the zero-shot Flan-UL2 PRP and the supervised RankT5 /
+setwise-SFT models, below RankGPT-4 and RankZephyr on DL19. Its pointwise and listwise `score` runs are 0.015–0.045
+below hosted Jev; its pairwise and setwise runs are within 0.005 on DL19. Caveats: baselines are the papers' own
+single runs (RankGPT3.5 varies by about ±0.006 across reruns [V]), and our listwise rows score passages with
+`score` questions rather than generating a permutation.
+
+#### Prompt format for the open model
+
+JEV-9B's training corpus (`SargeDev/jev-distill-corpus-v3`) has no criteria or rubric field and uses prose states.
+Its `retrieval_relevance` domain asks exactly our question, so two pointwise methods copy that format:
+`--method grade4` (a `choice` over `exact / partial / related / irrelevant`, expected grade 3/2/1/0) and
+`--method scenario` (a `noul` "Is this scenario one where: this passage is relevant to the query?"). Both use the
+state `A search engine returned this passage for the query "<q>". Passage: <p>`. Avoid the corpus's other relevance
+format (`memory_relevance`, "Is this memory relevant for answering the query?"): all its training targets are 0.5,
+and the model answers about 0.49 even for a perfect passage.
+
+| pointwise prompt | what JEV-9B sees | DL19 | DL20 | hosted Jev |
+|---|---|---|---|---|
+| `noul` | JSON state, "The passage answers the query." + True/False criteria as text | 0.665 | 0.661 | 0.693 / 0.674 |
+| `scenario` (new) | prose state, corpus yes/no question, no criteria | **0.715** | 0.660 | – |
+| `score` | JSON state, 4-level rubric as text, answered on 0–5 | 0.692 | **0.675** | 0.728 / 0.691 |
+| `grade4` (new) | prose state, corpus 4-label choice | 0.705 | 0.660 | – |
+
+The corpus format helps on DL19 (+0.050 for yes/no, +0.013 for graded; `scenario` beats hosted Jev's `noul`) but not
+on DL20 (−0.001 / −0.015), so it does not close the gap to hosted `score`. All four signals rise with the NIST grade
+(mean `grade4` 1.29 / 1.95 / 2.31 / 2.49 for grades 0–3).
+
 Every run writes `<save_path>.stats.json` with the number of comparisons, API calls, input tokens, estimated cost,
 retries and the per-request HTTP latency (mean / p50 / p95 / max). Truncation to `--query_length` /
 `--passage_length` uses tiktoken `cl100k_base` as an approximation; Jev's tokenizer is not public.

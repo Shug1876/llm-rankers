@@ -17,9 +17,12 @@ def main():
     parser.add_argument('--provider', default='vercel', choices=list(JevClient.PROVIDERS))
     parser.add_argument('--model', default=None)
     parser.add_argument('--api_key', default=None)
+    parser.add_argument('--base_url', default=None, help='provider local: vLLM server (default: env JEV_LOCAL_URL)')
+    parser.add_argument('--model_dir', default=None, help='provider local: JEV model directory (default: env JEV_MODEL_DIR)')
     args = parser.parse_args()
 
-    client = JevClient(provider=args.provider, api_key=args.api_key, model=args.model, max_retries=1)
+    client = JevClient(provider=args.provider, api_key=args.api_key, model=args.model, max_retries=1,
+                       base_url=args.base_url, model_dir=args.model_dir)
     state = {'query': 'what is the capital of france',
              'passages': {'P1': 'Paris is the capital and most populous city of France.',
                           'P2': 'Berlin is the capital of Germany and its largest city.',

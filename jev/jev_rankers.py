@@ -18,8 +18,16 @@ provider    endpoint                                                          ke
 vercel      POST https://ai-gateway.vercel.sh/v4/ai/evaluation-model          AI_GATEWAY_API_KEY
 openrouter  POST https://openrouter.ai/api/alpha/decisions                    OPENROUTER_API_KEY
 typesafe    POST https://api.typesafe.ai/v1/systemone                         TYPESAFE_API_KEY
+local       POST <base_url>/v1/completions (vLLM serving autotrust/JEV-9B)    none (JEV_LOCAL_URL, JEV_MODEL_DIR)
 =========== ================================================================ ==============================
+
+``local`` talks to the open distilled model (``serve_jev9b.sbatch``): one ``/v1/completions`` read-out per question
+through the ``jev-decision`` LoRA, plus the head bias and per-kind temperature from the model directory (the model
+card's ``decide()``). Its ``score`` is a fixed 0-5 scale (rubric levels go into the question text) and ``choice``
+takes at most 16 options.
 """
+import json
+import math
 import os
 import random
 import sys
@@ -89,31 +97,46 @@ def load_dotenv(paths=None):
 
 
 class JevClient:
-    PROVIDERS = ('vercel', 'openrouter', 'typesafe')
-    DEFAULT_MODELS = {'vercel': 'typesafe-ai/jev', 'openrouter': 'typesafe/jev-1.13', 'typesafe': 'jev-latest'}
+    PROVIDERS = ('vercel', 'openrouter', 'typesafe', 'local')
+    DEFAULT_MODELS = {'vercel': 'typesafe-ai/jev', 'openrouter': 'typesafe/jev-1.13', 'typesafe': 'jev-latest',
+                      'local': 'jev-decision'}
     ENV_KEYS = {'vercel': 'AI_GATEWAY_API_KEY', 'openrouter': 'OPENROUTER_API_KEY', 'typesafe': 'TYPESAFE_API_KEY'}
     URLS = {'vercel': 'https://ai-gateway.vercel.sh/v4/ai/evaluation-model',
             'openrouter': 'https://openrouter.ai/api/alpha/decisions',
             'typesafe': 'https://api.typesafe.ai/v1/systemone'}
     RETRY_STATUS = {408, 409, 425, 429, 500, 502, 503, 504, 529}
+    LOCAL_SCORE_LEVELS = 6  # JEV-9B / JEV-27B score on a fixed 0-5 scale
+    LOCAL_MAX_CHOICES = 16  # trained choice slots (A-P)
 
     def __init__(self, provider='vercel', api_key=None, model=None, timeout=60, max_retries=12, max_rps=None,
-                 verbose=False, on_call=None):
+                 verbose=False, on_call=None, base_url=None, model_dir=None):
         """``max_rps`` meters all threads to at most that many requests per second (TypeSafe allows ~1200/min);
-        ``on_call(elapsed_seconds)`` runs after every completed request (progress bars)."""
+        ``on_call(elapsed_seconds)`` runs after every completed request (progress bars).
+        ``base_url`` / ``model_dir`` (provider 'local' only): the vLLM server and the downloaded JEV model directory
+        (defaults: env JEV_LOCAL_URL or http://localhost:8000, env JEV_MODEL_DIR)."""
         if provider not in self.PROVIDERS:
             raise ValueError(f'Unknown provider {provider!r}, choose from {self.PROVIDERS}')
         load_dotenv()
         self.provider = provider
         self.model = model or self.DEFAULT_MODELS[provider]
-        self.url = self.URLS[provider]
-        self.api_key = api_key or os.environ.get(self.ENV_KEYS[provider])
-        if not self.api_key:
-            raise ValueError(f'No API key: pass api_key or set {self.ENV_KEYS[provider]} (env or .env).')
+        if provider == 'local':
+            self.url = (base_url or os.environ.get('JEV_LOCAL_URL') or 'http://localhost:8000').rstrip('/') + '/v1/completions'
+            self.api_key = api_key or 'none'
+            self._load_head(model_dir or os.environ.get('JEV_MODEL_DIR'))
+        else:
+            self.url = self.URLS[provider]
+            self.api_key = api_key or os.environ.get(self.ENV_KEYS[provider])
+            if not self.api_key:
+                raise ValueError(f'No API key: pass api_key or set {self.ENV_KEYS[provider]} (env or .env).')
         self.timeout, self.max_retries, self.max_rps, self.verbose, self.on_call = \
             timeout, max_retries, max_rps, verbose, on_call
 
         self.session = requests.Session()
+        if provider == 'local':
+            self.session.trust_env = False  # the cluster's http_proxy cannot reach compute nodes
+            adapter = requests.adapters.HTTPAdapter(pool_connections=4, pool_maxsize=256)
+            self.session.mount('http://', adapter)
+            self._question_pool = ThreadPoolExecutor(max_workers=128)
         self._lock = threading.Lock()
         self._rate_lock = threading.Lock()
         self._next_slot = 0.0
@@ -148,6 +171,8 @@ class JevClient:
                           'output_tokens': int(usage.get('output_tokens', usage.get('outputTokens')) or 0)}}
 
     def system_one(self, state, questions: Dict[str, dict]) -> dict:
+        if self.provider == 'local':
+            return self._local_system_one(state, questions)
         result, elapsed = self._request(state, questions)
         with self._lock:
             self.total_calls += 1
@@ -158,7 +183,83 @@ class JevClient:
             self.on_call(elapsed)
         return result
 
+    # -------------------------------------------------------------------------------------------- local (vLLM)
+    def _load_head(self, model_dir):
+        if not model_dir:
+            raise ValueError('provider local needs the JEV model directory: pass model_dir or set JEV_MODEL_DIR.')
+        with open(os.path.join(model_dir, 'adapter_vllm', 'decision_head.json')) as f:
+            head = json.load(f)
+        with open(os.path.join(model_dir, 'calibration.json')) as f:
+            temps = json.load(f)['per_kind']
+        self._head_ranges, self._head_ids, self._head_bias = \
+            head['slots']['ranges'], head['verbalizer_ids'], head['bias']
+        self._temps = temps
+
+    @staticmethod
+    def _local_question(q):
+        """The hosted schema's instructions + criteria as the open model's question text and option lines."""
+        kind, text, criteria = q['type'], q['instructions'], q.get('criteria')
+        if kind == 'noul':
+            if criteria:
+                text += f"\nTrue: {criteria.get('true')}\nFalse: {criteria.get('false')}"
+            return text, None, ['false', 'true']
+        if kind == 'score':
+            if criteria:
+                text += '\nScale: ' + '; '.join(f'{i} = {c}' for i, c in enumerate(criteria))
+            return text, None, [str(i) for i in range(JevClient.LOCAL_SCORE_LEVELS)]
+        keys = list(criteria)
+        if len(keys) > JevClient.LOCAL_MAX_CHOICES:
+            raise JevApiError(f'provider local: a choice takes at most {JevClient.LOCAL_MAX_CHOICES} options, '
+                              f'got {len(keys)} (use a smaller window / num_child)')
+        return text, keys, [k if criteria[k] is None else str(criteria[k]) for k in keys]
+
+    def _local_decide(self, state_text, q):
+        kind = q['type']
+        question, keys, options = self._local_question(q)
+        lines = options if kind != 'choice' else [f"{'ABCDEFGHIJKLMNOP'[i]}) {o}" for i, o in enumerate(options)]
+        prompt = f'[kind] {kind}\n[state] {state_text}\n[question] {question}\n[options]\n' + '\n'.join(lines) + '\n[decision]:'
+        s = self._head_ranges[kind][0]
+        ids = self._head_ids[s: s + len(options)]
+        body = {'model': self.model, 'prompt': prompt, 'max_tokens': 1, 'temperature': 1.0, 'logprobs': len(ids),
+                'allowed_token_ids': ids, 'add_special_tokens': False, 'return_tokens_as_token_ids': True}
+        data, elapsed = self._post(body, {'Content-Type': 'application/json'})
+        top = data['choices'][0]['logprobs']['top_logprobs'][0]
+        lp = {int(k.split(':')[1]): v for k, v in top.items()}
+        z = [(lp.get(t, -1e9) + self._head_bias[s + i]) / self._temps[kind] for i, t in enumerate(ids)]
+        e = [math.exp(x - max(z)) for x in z]
+        p = [x / sum(e) for x in e]
+        tokens = int((data.get('usage') or {}).get('prompt_tokens') or 0)
+        if kind == 'noul':
+            answer = {'type': 'noul', 'noul': p[1]}
+        elif kind == 'score':
+            answer = {'type': 'score', 'score': sum(i * x for i, x in enumerate(p)),
+                      'probabilities': {str(i): x for i, x in enumerate(p)}}
+        else:
+            probs = dict(zip(keys, p))
+            answer = {'type': 'choice', 'choice': max(probs, key=probs.get), 'probabilities': probs}
+        return answer, tokens, elapsed
+
+    def _local_system_one(self, state, questions):
+        """One read-out request per question, all at once; same return format as the hosted providers."""
+        state_text = state if isinstance(state, str) else json.dumps(state, ensure_ascii=False)
+        names = list(questions)
+        futures = [self._question_pool.submit(self._local_decide, state_text, questions[n]) for n in names]
+        answers, in_tok = {}, 0
+        for name, fut in zip(names, futures):
+            answer, tokens, elapsed = fut.result()
+            answers[name] = answer
+            in_tok += tokens
+            with self._lock:
+                self.total_calls += 1
+                self.total_input_tokens += tokens
+                self.latencies.append(elapsed)
+            if self.on_call is not None:
+                self.on_call(elapsed)
+        return {'answers': answers, 'usage': {'input_tokens': in_tok, 'output_tokens': len(names)}}
+
     def estimated_cost_usd(self):
+        if self.provider == 'local':
+            return 0.0
         return self.total_input_tokens / 1e6 * JEV_INPUT_USD_PER_MTOK
 
     def latency_summary(self):
@@ -180,7 +281,12 @@ class JevClient:
             time.sleep(wait)
 
     def _request(self, state, questions):
-        body, headers, last_err = self._body(state, questions), self._headers(), None
+        data, elapsed = self._post(self._body(state, questions), self._headers())
+        return self._parse(data), elapsed
+
+    def _post(self, body, headers):
+        """POST with retries on transient errors; returns (decoded JSON, HTTP round-trip seconds)."""
+        last_err = None
         for attempt in range(self.max_retries + 1):
             self._throttle()
             try:
@@ -203,7 +309,7 @@ class JevClient:
                 continue
             if r.status_code >= 400:
                 raise JevApiError(self._explain(r))
-            return self._parse(r.json()), elapsed
+            return r.json(), elapsed
         raise JevApiError(f'Giving up after {self.max_retries + 1} attempts. Last error: {last_err}')
 
     def _explain(self, r):
@@ -358,13 +464,26 @@ class JevPointwiseLlmRanker(JevRanker):
                        adapted from legal citations to web search: state keys `query` / `candidate_passage`, the
                        question phrased with its context, criteria contrasting a specific answer with a similar topic."""
 
+    METHODS = ('noul', 'score', 'cookbook', 'cookbook_score', 'trec', 'umbrela', 'grade4', 'scenario')
+    GRADE4 = {'exact': 3, 'partial': 2, 'related': 1, 'irrelevant': 0}
+
     def __init__(self, client, method='noul', num_workers=4):
         super().__init__(client, num_workers)
-        if method not in ('noul', 'score', 'cookbook', 'cookbook_score', 'trec', 'umbrela'):
-            raise ValueError("method must be one of noul, score, cookbook, cookbook_score, trec, umbrela")
+        if method not in self.METHODS:
+            raise ValueError(f"method must be one of {', '.join(self.METHODS)}")
         self.method = method
 
     def _score_one(self, query, doc):
+        # grade4 / scenario: the open JEV models' training format (distill corpus, domain retrieval_relevance): a prose
+        # state and bare labels, no criteria. grade4 = expected grade with exact 3 / partial 2 / related 1 / irrelevant 0.
+        if self.method in ('grade4', 'scenario'):
+            state = f'A search engine returned this passage for the query "{query}". Passage: {doc.text}'
+            if self.method == 'scenario':
+                qs = {'relevant': noul('Is this scenario one where: this passage is relevant to the query?')}
+                return self.client.system_one(state, qs)['answers']['relevant']['noul']
+            qs = {'relevance': choice('Relevance for this scenario.', {k: None for k in self.GRADE4})}
+            probs = self.client.system_one(state, qs)['answers']['relevance']['probabilities']
+            return sum(w * float(probs.get(k, 0.0)) for k, w in self.GRADE4.items())
         if self.method == 'trec':  # the TREC DL assessor scale, verbatim, with the NIST note on 'Related'
             state = {'query': query, 'passage': doc.text}
             qs = {'relevance': score(

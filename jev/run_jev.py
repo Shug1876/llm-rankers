@@ -76,7 +76,8 @@ def load_first_stage(run_path, query_map, texts, hits, truncate, passage_length,
 
 def main(args):
     client = JevClient(provider=args.run.provider, api_key=args.run.api_key, model=args.run.model,
-                       max_rps=args.run.max_rps or None, verbose=args.run.verbose)
+                       max_rps=args.run.max_rps or None, verbose=args.run.verbose,
+                       base_url=args.run.base_url, model_dir=args.run.model_dir)
     ranker, family = build_ranker(args, client)
     print(f'provider {client.provider}, model {client.model}, method {family}')
 
@@ -164,12 +165,14 @@ if __name__ == '__main__':
     run.add_argument('--provider', default='vercel', choices=list(JevClient.PROVIDERS))
     run.add_argument('--model', default=None, help="model id at the provider (default: the provider's Jev id)")
     run.add_argument('--api_key', default=None, help='default: environment or repo-root .env')
+    run.add_argument('--base_url', default=None, help='provider local: vLLM server (default: env JEV_LOCAL_URL)')
+    run.add_argument('--model_dir', default=None, help='provider local: JEV model directory (default: env JEV_MODEL_DIR)')
     run.add_argument('--num_workers', type=int, default=4, help='concurrent requests inside one query (pointwise)')
     run.add_argument('--query_workers', type=int, default=12, help='queries re-ranked concurrently')
     run.add_argument('--max_rps', type=float, default=20.0, help='global requests/second cap (0 = none)')
     run.add_argument('--max_queries', type=int, default=None, help='only re-rank the first N queries')
     run.add_argument('--verbose', action='store_true')
-    commands.add_parser('pointwise').add_argument('--method', default='noul', choices=['noul', 'score', 'cookbook', 'cookbook_score', 'trec', 'umbrela'])
+    commands.add_parser('pointwise').add_argument('--method', default='noul', choices=['noul', 'score', 'cookbook', 'cookbook_score', 'trec', 'umbrela', 'grade4', 'scenario'])
     commands.add_parser('pairwise').add_argument('--k', type=int, default=10)
     setwise = commands.add_parser('setwise')
     setwise.add_argument('--num_child', type=int, default=10)

@@ -9,11 +9,17 @@ import os
 import ir_datasets
 import ir_measures
 
-RUNS = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'runs', 'jev')
+RUNS = os.environ.get('JEV_RUNS_DIR') or os.path.join(os.path.dirname(os.path.abspath(__file__)), 'runs', 'jev')
 DATASETS = {'dl19': 'msmarco-passage/trec-dl-2019/judged', 'dl20': 'msmarco-passage/trec-dl-2020/judged'}
 METHODS = [
     ('pointwise.noul', 'Jev pointwise, noul'),
     ('pointwise.score', 'Jev pointwise, score'),
+    ('pointwise.cookbook', 'Jev pointwise, cookbook'),
+    ('pointwise.cookbook_score', 'Jev pointwise, cookbook_score'),
+    ('pointwise.trec', 'Jev pointwise, trec'),
+    ('pointwise.umbrela', 'Jev pointwise, umbrela'),
+    ('pointwise.grade4', 'Jev pointwise, grade4'),
+    ('pointwise.scenario', 'Jev pointwise, scenario'),
     ('pairwise.heapsort', 'Jev pairwise, heapsort'),
     ('setwise.heapsort.c10', 'Jev setwise, heapsort c=10'),
     ('listwise.choice.w20s10', 'Jev listwise w20/s10, choice'),
