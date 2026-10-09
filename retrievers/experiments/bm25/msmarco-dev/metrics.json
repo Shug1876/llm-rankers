@@ -1,0 +1,18 @@
+{
+  "dataset": "msmarco-dev",
+  "group": "msmarco",
+  "retriever": "bm25",
+  "k": 100,
+  "num_queries": 6980,
+  "num_eval_queries": 6980,
+  "metrics": {
+    "RR@10": 0.18524605448674217,
+    "nDCG@10": 0.23135687571979208,
+    "R@100": 0.6707497612225407
+  },
+  "model": "BM25 k1=0.9 b=0.4",
+  "index": "/mnt/primary/llm-rankers/retrievers/index/bm25-pisa-porter2/msmarco-dev.pisa",
+  "tokenizer": "pisa porter2 + terrier stops",
+  "seconds_index_or_load": 1680.5,
+  "seconds_search": 0.7
+}

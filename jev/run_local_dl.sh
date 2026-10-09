@@ -5,6 +5,7 @@
 #   nohup bash jev/run_local_dl.sh > jev/logs/run_local_dl.log 2>&1 &
 #   tail -f jev/logs/run_local_dl.log
 #   DATASETS=dl20 JEV_LOCAL_URL=... JEV_LONG_URL=... nohup bash jev/run_local_dl.sh ...   # one dataset per server
+#   ONLY="pointwise.score pointwise.trec" OUT=... bash jev/run_local_dl.sh                  # a subset of METHODS (keys)
 #
 # Finished runs are skipped, so after a crash or a server restart just run it again. Not run: listwise --mode choice
 # (windows of 20/100 exceed the open model's 16 choice options). The 100-in-1 listwise runs (~19k tokens per request)
@@ -60,6 +61,7 @@ for DS in ${DATASETS:-dl19 dl20}; do
           --passage_length 128 --num_workers 32 --query_workers 12 --max_rps 0 $EXTRA"
   for m in "${METHODS[@]}"; do
     read -r key args <<< "$m"
+    if [ -n "${ONLY:-}" ] && [[ " $ONLY " != *" $key "* ]]; then continue; fi
     save=$OUT/$DS.$key.txt
     if [ -s "$save.stats.json" ]; then echo "skip $save (done)"; continue; fi
     url=$JEV_LOCAL_URL

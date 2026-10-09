@@ -1,0 +1,17 @@
+{
+  "dataset": "coir/codefeedback-mt",
+  "group": "coir",
+  "retriever": "e5",
+  "k": 100,
+  "num_queries": 13277,
+  "num_eval_queries": 13277,
+  "metrics": {
+    "nDCG@10": 0.4156062639378099,
+    "R@100": 0.682006477366875
+  },
+  "model": "intfloat/e5-base-v2",
+  "index": "/mnt/primary/llm-rankers/retrievers/index/e5-e5-base-v2/coir_codefeedback-mt.flex",
+  "search": "exact (numpy-cpu)",
+  "seconds_index_or_load": 12975.5,
+  "seconds_search": 2874.5
+}

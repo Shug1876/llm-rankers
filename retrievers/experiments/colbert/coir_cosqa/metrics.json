@@ -1,0 +1,18 @@
+{
+  "dataset": "coir/cosqa",
+  "group": "coir",
+  "retriever": "colbert",
+  "k": 100,
+  "num_queries": 500,
+  "num_eval_queries": 500,
+  "metrics": {
+    "nDCG@10": 0.1808060834345455,
+    "R@100": 0.628
+  },
+  "model": "lightonai/colbertv2.0",
+  "index": "/mnt/scratch/users/3148123l/llm-rankers/retrievers/index/colbert-colbertv2.0/coir_cosqa.plaid",
+  "query_length": 32,
+  "document_length": 300,
+  "seconds_index_or_load": 38.8,
+  "seconds_search": 3.5
+}

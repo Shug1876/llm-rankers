@@ -1,0 +1,17 @@
+{
+  "dataset": "bright/biology",
+  "group": "bright",
+  "retriever": "e5",
+  "k": 100,
+  "num_queries": 103,
+  "num_eval_queries": 103,
+  "metrics": {
+    "nDCG@10": 0.028993988418088035,
+    "R@100": 0.14795933073909567
+  },
+  "model": "intfloat/e5-base-v2",
+  "index": "/mnt/primary/llm-rankers/retrievers/index/e5-e5-base-v2/bright_biology.flex",
+  "search": "exact (numpy-cpu)",
+  "seconds_index_or_load": 5969.5,
+  "seconds_search": 70.4
+}

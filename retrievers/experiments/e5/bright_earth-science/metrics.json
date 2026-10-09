@@ -1,0 +1,17 @@
+{
+  "dataset": "bright/earth-science",
+  "group": "bright",
+  "retriever": "e5",
+  "k": 100,
+  "num_queries": 116,
+  "num_eval_queries": 116,
+  "metrics": {
+    "nDCG@10": 0.15616999636476578,
+    "R@100": 0.34082866682118046
+  },
+  "model": "intfloat/e5-base-v2",
+  "index": "/mnt/primary/llm-rankers/retrievers/index/e5-e5-base-v2/bright_earth-science.flex",
+  "search": "exact (numpy-cpu)",
+  "seconds_index_or_load": 18832.7,
+  "seconds_search": 37.8
+}

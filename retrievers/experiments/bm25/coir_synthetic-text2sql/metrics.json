@@ -1,0 +1,17 @@
+{
+  "dataset": "coir/synthetic-text2sql",
+  "group": "coir",
+  "retriever": "bm25",
+  "k": 100,
+  "num_queries": 5851,
+  "num_eval_queries": 5851,
+  "metrics": {
+    "nDCG@10": 0.4304545517504318,
+    "R@100": 0.8837805503332764
+  },
+  "model": "BM25 k1=0.9 b=0.4",
+  "index": "/mnt/primary/llm-rankers/retrievers/index/bm25-pisa-porter2/coir_synthetic-text2sql.pisa",
+  "tokenizer": "pisa porter2 + terrier stops",
+  "seconds_index_or_load": 41.5,
+  "seconds_search": 0.5
+}

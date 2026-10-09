@@ -1,0 +1,18 @@
+{
+  "dataset": "beir/scifact",
+  "group": "beir",
+  "retriever": "colbert",
+  "k": 100,
+  "num_queries": 300,
+  "num_eval_queries": 300,
+  "metrics": {
+    "nDCG@10": 0.691479894843597,
+    "R@100": 0.9253333333333335
+  },
+  "model": "lightonai/colbertv2.0",
+  "index": "/mnt/scratch/users/3148123l/llm-rankers/retrievers/index/colbert-colbertv2.0/beir_scifact.plaid",
+  "query_length": 32,
+  "document_length": 300,
+  "seconds_index_or_load": 56.9,
+  "seconds_search": 7.4
+}

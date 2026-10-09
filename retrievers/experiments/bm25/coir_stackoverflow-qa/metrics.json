@@ -1,0 +1,17 @@
+{
+  "dataset": "coir/stackoverflow-qa",
+  "group": "coir",
+  "retriever": "bm25",
+  "k": 100,
+  "num_queries": 1994,
+  "num_eval_queries": 1994,
+  "metrics": {
+    "nDCG@10": 0.6350293321403006,
+    "R@100": 0.8470411233701103
+  },
+  "model": "BM25 k1=0.9 b=0.4",
+  "index": "/mnt/primary/llm-rankers/retrievers/index/bm25-pisa-porter2/coir_stackoverflow-qa.pisa",
+  "tokenizer": "pisa porter2 + terrier stops",
+  "seconds_index_or_load": 121.9,
+  "seconds_search": 0.9
+}

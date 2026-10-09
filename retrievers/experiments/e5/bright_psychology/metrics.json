@@ -1,0 +1,17 @@
+{
+  "dataset": "bright/psychology",
+  "group": "bright",
+  "retriever": "e5",
+  "k": 100,
+  "num_queries": 101,
+  "num_eval_queries": 101,
+  "metrics": {
+    "nDCG@10": 0.08463510332042183,
+    "R@100": 0.2824840337329094
+  },
+  "model": "intfloat/e5-base-v2",
+  "index": "/mnt/primary/llm-rankers/retrievers/index/e5-e5-base-v2/bright_psychology.flex",
+  "search": "exact (numpy-cpu)",
+  "seconds_index_or_load": 6291.4,
+  "seconds_search": 42.3
+}

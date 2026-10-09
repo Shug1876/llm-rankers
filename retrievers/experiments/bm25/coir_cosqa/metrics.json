@@ -1,0 +1,17 @@
+{
+  "dataset": "coir/cosqa",
+  "group": "coir",
+  "retriever": "bm25",
+  "k": 100,
+  "num_queries": 500,
+  "num_eval_queries": 500,
+  "metrics": {
+    "nDCG@10": 0.200745603915111,
+    "R@100": 0.654
+  },
+  "model": "BM25 k1=0.9 b=0.4",
+  "index": "/mnt/scratch/users/3148123l/llm-rankers/retrievers/index/bm25-pisa-porter2/coir_cosqa.pisa",
+  "tokenizer": "pisa porter2 + terrier stops",
+  "seconds_index_or_load": 0.0,
+  "seconds_search": 0.0
+}

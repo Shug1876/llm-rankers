@@ -1,0 +1,17 @@
+{
+  "dataset": "coir/synthetic-text2sql",
+  "group": "coir",
+  "retriever": "e5",
+  "k": 100,
+  "num_queries": 5851,
+  "num_eval_queries": 5851,
+  "metrics": {
+    "nDCG@10": 0.5239142057911184,
+    "R@100": 0.9709451375833191
+  },
+  "model": "intfloat/e5-base-v2",
+  "index": "/mnt/primary/llm-rankers/retrievers/index/e5-e5-base-v2/coir_synthetic-text2sql.flex",
+  "search": "exact (numpy-cpu)",
+  "seconds_index_or_load": 2641.2,
+  "seconds_search": 63.6
+}

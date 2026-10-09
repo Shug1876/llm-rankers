@@ -1,0 +1,17 @@
+{
+  "dataset": "beir/nq",
+  "group": "beir",
+  "retriever": "bm25",
+  "k": 100,
+  "num_queries": 3452,
+  "num_eval_queries": 3452,
+  "metrics": {
+    "nDCG@10": 0.30745613617113676,
+    "R@100": 0.7491792197759753
+  },
+  "model": "BM25 k1=0.9 b=0.4",
+  "index": "/mnt/primary/llm-rankers/retrievers/index/bm25-pisa-porter2/beir_nq.pisa",
+  "tokenizer": "pisa porter2 + terrier stops",
+  "seconds_index_or_load": 1025.8,
+  "seconds_search": 1.1
+}

@@ -113,7 +113,7 @@ def main(args):
         try:
             t0 = time.time()
             result = r.rerank(query, ranking)
-            stats = (r.total_compare, time.time() - t0)
+            stats = (r.total_compare, time.time() - t0, dict(getattr(r, 'distributions', {})))
         finally:
             rankers.put(r)
         bar.update(1)
@@ -142,6 +142,13 @@ def main(args):
         for qid, ranking in (o[0] for o in outputs):
             for rank, doc in enumerate(ranking, 1):
                 f.write(f'{qid}\tQ0\t{doc.docid}\t{rank}\t{doc.score}\tJev-{family}\n')
+    levels = JevPointwiseLlmRanker.GRADED.get(args.pointwise.method) if family == 'pointwise' else None
+    if levels:  # graded methods: full answer distribution per passage, for aggregate_pointwise.py
+        with open(args.run.save_path + '.probs.jsonl', 'w') as f:
+            for (qid, ranking), (_, _, dists) in outputs:
+                for doc in ranking:
+                    f.write(json.dumps({'qid': qid, 'docid': doc.docid, 'score': doc.score,
+                                        'probs': dists[doc.docid], 'levels': levels}) + '\n')
     with open(args.run.save_path + '.stats.json', 'w') as f:
         json.dump(stats, f, indent=2)
     lat = stats['request_latency']

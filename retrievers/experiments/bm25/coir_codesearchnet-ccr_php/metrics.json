@@ -1,0 +1,17 @@
+{
+  "dataset": "coir/codesearchnet-ccr/php",
+  "group": "coir",
+  "retriever": "bm25",
+  "k": 100,
+  "num_queries": 14014,
+  "num_eval_queries": 14014,
+  "metrics": {
+    "nDCG@10": 0.8235938167962354,
+    "R@100": 0.9763094048808334
+  },
+  "model": "BM25 k1=0.9 b=0.4",
+  "index": "/mnt/primary/llm-rankers/retrievers/index/bm25-pisa-porter2/coir_codesearchnet-ccr_php.pisa",
+  "tokenizer": "pisa porter2 + terrier stops",
+  "seconds_index_or_load": 43.9,
+  "seconds_search": 3.0
+}

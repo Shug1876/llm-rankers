@@ -1,0 +1,17 @@
+{
+  "dataset": "bright/aops",
+  "group": "bright",
+  "retriever": "bm25",
+  "k": 100,
+  "num_queries": 111,
+  "num_eval_queries": 111,
+  "metrics": {
+    "nDCG@10": 0.06385135104253846,
+    "R@100": 0.19492706992706993
+  },
+  "model": "BM25 k1=0.9 b=0.4",
+  "index": "/mnt/primary/llm-rankers/retrievers/index/bm25-pisa-porter2/bright_aops.pisa",
+  "tokenizer": "pisa porter2 + terrier stops",
+  "seconds_index_or_load": 275.3,
+  "seconds_search": 2.6
+}

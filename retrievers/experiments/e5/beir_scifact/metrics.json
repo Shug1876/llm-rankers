@@ -1,0 +1,17 @@
+{
+  "dataset": "beir/scifact",
+  "group": "beir",
+  "retriever": "e5",
+  "k": 100,
+  "num_queries": 300,
+  "num_eval_queries": 300,
+  "metrics": {
+    "nDCG@10": 0.719132455674022,
+    "R@100": 0.9626666666666667
+  },
+  "model": "intfloat/e5-base-v2",
+  "index": "/mnt/scratch/users/3148123l/llm-rankers/retrievers/index/e5-e5-base-v2/beir_scifact.flex",
+  "search": "exact (torch-fp16-gpu)",
+  "seconds_index_or_load": 2.3,
+  "seconds_search": 0.3
+}

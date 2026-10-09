@@ -1,0 +1,17 @@
+{
+  "dataset": "coir/codesearchnet/go",
+  "group": "coir",
+  "retriever": "e5",
+  "k": 100,
+  "num_queries": 8122,
+  "num_eval_queries": 8122,
+  "metrics": {
+    "nDCG@10": 0.69029495422684,
+    "R@100": 0.9296971189362226
+  },
+  "model": "intfloat/e5-base-v2",
+  "index": "/mnt/primary/llm-rankers/retrievers/index/e5-e5-base-v2/coir_codesearchnet_go.flex",
+  "search": "exact (numpy-cpu)",
+  "seconds_index_or_load": 2698.7,
+  "seconds_search": 760.4
+}

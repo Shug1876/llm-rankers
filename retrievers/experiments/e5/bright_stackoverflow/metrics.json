@@ -1,0 +1,17 @@
+{
+  "dataset": "bright/stackoverflow",
+  "group": "bright",
+  "retriever": "e5",
+  "k": 100,
+  "num_queries": 117,
+  "num_eval_queries": 117,
+  "metrics": {
+    "nDCG@10": 0.09002074556514021,
+    "R@100": 0.45898589644558213
+  },
+  "model": "intfloat/e5-base-v2",
+  "index": "/mnt/primary/llm-rankers/retrievers/index/e5-e5-base-v2/bright_stackoverflow.flex",
+  "search": "exact (numpy-cpu)",
+  "seconds_index_or_load": 22897.1,
+  "seconds_search": 55.4
+}

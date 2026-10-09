@@ -1,0 +1,17 @@
+{
+  "dataset": "miracl/en",
+  "group": "miracl",
+  "retriever": "bm25",
+  "k": 100,
+  "num_queries": 799,
+  "num_eval_queries": 799,
+  "metrics": {
+    "nDCG@10": 0.36015398804286325,
+    "R@100": 0.8033138464928202
+  },
+  "model": "BM25 k1=0.9 b=0.4",
+  "index": "/mnt/primary/llm-rankers/retrievers/index/bm25-pisa-porter2/miracl_en.pisa",
+  "tokenizer": "pisa porter2 + terrier stops",
+  "seconds_index_or_load": 4498.7,
+  "seconds_search": 0.9
+}

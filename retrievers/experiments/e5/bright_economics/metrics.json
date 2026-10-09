@@ -1,0 +1,17 @@
+{
+  "dataset": "bright/economics",
+  "group": "bright",
+  "retriever": "e5",
+  "k": 100,
+  "num_queries": 103,
+  "num_eval_queries": 103,
+  "metrics": {
+    "nDCG@10": 0.0841896341367301,
+    "R@100": 0.30867391493927887
+  },
+  "model": "intfloat/e5-base-v2",
+  "index": "/mnt/primary/llm-rankers/retrievers/index/e5-e5-base-v2/bright_economics.flex",
+  "search": "exact (numpy-cpu)",
+  "seconds_index_or_load": 6187.4,
+  "seconds_search": 46.5
+}

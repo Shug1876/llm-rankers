@@ -1,0 +1,17 @@
+{
+  "dataset": "miracl/sw",
+  "group": "miracl",
+  "retriever": "splade",
+  "k": 100,
+  "num_queries": 482,
+  "num_eval_queries": 482,
+  "metrics": {
+    "nDCG@10": 0.7659203716500936,
+    "R@100": 0.9697095435684647
+  },
+  "model": "opensearch-project/opensearch-neural-sparse-encoding-multilingual-v1",
+  "index": "/mnt/scratch/users/3148123l/llm-rankers/retrievers/index/splade-opensearch-neural-sparse-encoding-multilingual-v1/miracl_sw.pisa",
+  "max_length": 512,
+  "seconds_index_or_load": 182.8,
+  "seconds_search": 0.1
+}

@@ -1,0 +1,17 @@
+{
+  "dataset": "beir/cqadupstack/stats",
+  "group": "beir",
+  "retriever": "bm25",
+  "k": 100,
+  "num_queries": 652,
+  "num_eval_queries": 652,
+  "metrics": {
+    "nDCG@10": 0.24786751395134407,
+    "R@100": 0.5182079338521056
+  },
+  "model": "BM25 k1=0.9 b=0.4",
+  "index": "/mnt/primary/llm-rankers/retrievers/index/bm25-pisa-porter2/beir_cqadupstack_stats.pisa",
+  "tokenizer": "pisa porter2 + terrier stops",
+  "seconds_index_or_load": 12.1,
+  "seconds_search": 0.1
+}

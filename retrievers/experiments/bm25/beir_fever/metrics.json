@@ -1,0 +1,17 @@
+{
+  "dataset": "beir/fever",
+  "group": "beir",
+  "retriever": "bm25",
+  "k": 100,
+  "num_queries": 6666,
+  "num_eval_queries": 6666,
+  "metrics": {
+    "nDCG@10": 0.631111657721116,
+    "R@100": 0.9069841507960319
+  },
+  "model": "BM25 k1=0.9 b=0.4",
+  "index": "/mnt/primary/llm-rankers/retrievers/index/bm25-pisa-porter2/beir_fever.pisa",
+  "tokenizer": "pisa porter2 + terrier stops",
+  "seconds_index_or_load": 905.7,
+  "seconds_search": 4.3
+}

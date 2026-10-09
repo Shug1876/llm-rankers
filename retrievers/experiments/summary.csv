@@ -1,0 +1,25 @@
+retriever,model,group,dataset,measure,value
+bm25,BM25 k1=0.9 b=0.4,beir,beir/arguana,nDCG@10,0.4187685029112522
+bm25,BM25 k1=0.9 b=0.4,beir,beir/arguana,R@100,0.9544807965860598
+bm25,BM25 k1=0.9 b=0.4,beir,beir/scifact,nDCG@10,0.6758697011122144
+bm25,BM25 k1=0.9 b=0.4,beir,beir/scifact,R@100,0.9186666666666667
+bm25,BM25 k1=0.9 b=0.4,bright,bright/biology,nDCG@10,0.1710836241558114
+bm25,BM25 k1=0.9 b=0.4,bright,bright/biology,R@100,0.4299406719437379
+bm25,BM25 k1=0.9 b=0.4,coir,coir/cosqa,nDCG@10,0.200745603915111
+bm25,BM25 k1=0.9 b=0.4,coir,coir/cosqa,R@100,0.654
+bm25,BM25 k1=0.9 b=0.4,miracl,miracl/sw,nDCG@10,0.46704320836493346
+bm25,BM25 k1=0.9 b=0.4,miracl,miracl/sw,R@100,0.8208432128037938
+colbert,lightonai/colbertv2.0,beir,beir/scifact,nDCG@10,0.691479894843597
+colbert,lightonai/colbertv2.0,beir,beir/scifact,R@100,0.9253333333333335
+colbert,lightonai/colbertv2.0,coir,coir/cosqa,nDCG@10,0.1808060834345455
+colbert,lightonai/colbertv2.0,coir,coir/cosqa,R@100,0.628
+colbert,lightonai/mLateOn,miracl,miracl/sw,nDCG@10,0.5736713794985153
+colbert,lightonai/mLateOn,miracl,miracl/sw,R@100,0.870465323058684
+e5,intfloat/e5-base-v2,beir,beir/scifact,nDCG@10,0.719132455674022
+e5,intfloat/e5-base-v2,beir,beir/scifact,R@100,0.9626666666666667
+e5,intfloat/e5-base-v2,coir,coir/cosqa,nDCG@10,0.32391573111002875
+e5,intfloat/e5-base-v2,coir,coir/cosqa,R@100,0.904
+e5,intfloat/multilingual-e5-base,miracl,miracl/sw,nDCG@10,0.7127538509022464
+e5,intfloat/multilingual-e5-base,miracl,miracl/sw,R@100,0.9561845485082
+splade,opensearch-project/opensearch-neural-sparse-encoding-multilingual-v1,miracl,miracl/sw,nDCG@10,0.7659203716500936
+splade,opensearch-project/opensearch-neural-sparse-encoding-multilingual-v1,miracl,miracl/sw,R@100,0.9697095435684647

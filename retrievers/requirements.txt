@@ -1,0 +1,10 @@
+pyterrier>=1.1
+pyterrier-pisa
+pyterrier-splade
+pyterrier-dr
+pylate
+ir_datasets>=0.6
+ir_measures
+datasets
+pandas
+tqdm

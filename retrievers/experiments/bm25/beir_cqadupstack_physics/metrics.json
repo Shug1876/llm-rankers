@@ -1,0 +1,17 @@
+{
+  "dataset": "beir/cqadupstack/physics",
+  "group": "beir",
+  "retriever": "bm25",
+  "k": 100,
+  "num_queries": 1039,
+  "num_eval_queries": 1039,
+  "metrics": {
+    "nDCG@10": 0.305835216423015,
+    "R@100": 0.6314372583862479
+  },
+  "model": "BM25 k1=0.9 b=0.4",
+  "index": "/mnt/primary/llm-rankers/retrievers/index/bm25-pisa-porter2/beir_cqadupstack_physics.pisa",
+  "tokenizer": "pisa porter2 + terrier stops",
+  "seconds_index_or_load": 9.2,
+  "seconds_search": 0.1
+}

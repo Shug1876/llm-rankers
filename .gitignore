@@ -164,3 +164,7 @@ cython_debug/
 # Jev experiments: run files and server logs
 jev/runs/
 jev/logs/
+
+# Retriever benchmark: indexes (large, rebuilt by run.py) and SLURM logs
+retrievers/index/
+retrievers/logs/

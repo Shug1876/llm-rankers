@@ -1,0 +1,17 @@
+{
+  "dataset": "coir/codetrans-contest",
+  "group": "coir",
+  "retriever": "e5",
+  "k": 100,
+  "num_queries": 221,
+  "num_eval_queries": 221,
+  "metrics": {
+    "nDCG@10": 0.9860206869752053,
+    "R@100": 1.0
+  },
+  "model": "intfloat/e5-base-v2",
+  "index": "/mnt/primary/llm-rankers/retrievers/index/e5-e5-base-v2/coir_codetrans-contest.flex",
+  "search": "exact (numpy-cpu)",
+  "seconds_index_or_load": 167.2,
+  "seconds_search": 54.1
+}

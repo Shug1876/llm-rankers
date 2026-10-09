@@ -1,0 +1,18 @@
+{
+  "dataset": "miracl/sw",
+  "group": "miracl",
+  "retriever": "colbert",
+  "k": 100,
+  "num_queries": 482,
+  "num_eval_queries": 482,
+  "metrics": {
+    "nDCG@10": 0.5736713794985153,
+    "R@100": 0.870465323058684
+  },
+  "model": "lightonai/mLateOn",
+  "index": "/mnt/scratch/users/3148123l/llm-rankers/retrievers/index/colbert-mLateOn/miracl_sw.plaid",
+  "query_length": 8192,
+  "document_length": 512,
+  "seconds_index_or_load": 227.9,
+  "seconds_search": 14.5
+}
