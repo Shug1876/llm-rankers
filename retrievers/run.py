@@ -68,6 +68,9 @@ def main():
                         help='override the Hugging Face model (default: the English or multilingual one per dataset)')
     parser.add_argument('--batch_size', type=int, default=None, help='encoder batch size (model-specific default)')
     parser.add_argument('--plaid_batch', type=int, default=50_000, help='docs buffered per PLAID add (ColBERT)')
+    parser.add_argument('--plaid_centroid_batch', type=int, default=1024,
+                        help='tokens per chunk when a PLAID add checks new tokens against all centroids (ColBERT; '
+                             'fast-plaid uses 4096; lower it on GPU OOM in update_centroids)')
     parser.add_argument('--colbert_query_length', type=int, default=None)
     parser.add_argument('--colbert_doc_length', type=int, default=None)
     parser.add_argument('--overwrite_run', action='store_true', help='recompute runs that already have metrics.json')

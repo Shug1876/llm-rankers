@@ -66,6 +66,7 @@ Submit from the repository root (SLURM writes `retrievers/logs/<job>-<id>.out`).
 | `--model` | per dataset (table above) | another Hugging Face model; results go to `experiments/<retriever>-<model>/` |
 | `--batch_size` | 64 SPLADE (32 multilingual), 256 E5, 128 ColBERT | encoder batch size |
 | `--plaid_batch` | 50,000 | documents buffered (fp32 token embeddings) per PLAID add |
+| `--plaid_centroid_batch` | 1,024 | tokens per chunk in fast-plaid's outlier check on each PLAID add (upstream 4096); lower it if a build OOMs in `update_centroids` |
 | `--colbert_query_length`, `--colbert_doc_length` | model defaults (mLateOn docs: 512) | ColBERT truncation |
 | `--overwrite_run` | off | recompute runs whose `metrics.json` exists (indexes are always reused) |
 | `--keep_going` | off | log a failing dataset and continue with the group |
