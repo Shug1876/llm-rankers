@@ -1,24 +1,201 @@
 retriever,model,group,dataset,measure,value
 bm25,BM25 k1=0.9 b=0.4,beir,beir/arguana,nDCG@10,0.4187685029112522
 bm25,BM25 k1=0.9 b=0.4,beir,beir/arguana,R@100,0.9544807965860598
+bm25,BM25 k1=0.9 b=0.4,beir,beir/climate-fever,nDCG@10,0.1664185541550687
+bm25,BM25 k1=0.9 b=0.4,beir,beir/climate-fever,R@100,0.4304234527687297
+bm25,BM25 k1=0.9 b=0.4,beir,beir/cqadupstack/android,nDCG@10,0.3560752851714174
+bm25,BM25 k1=0.9 b=0.4,beir,beir/cqadupstack/android,R@100,0.6826417696363125
+bm25,BM25 k1=0.9 b=0.4,beir,beir/cqadupstack/english,nDCG@10,0.2856729633446759
+bm25,BM25 k1=0.9 b=0.4,beir,beir/cqadupstack/english,R@100,0.5082908227242148
+bm25,BM25 k1=0.9 b=0.4,beir,beir/cqadupstack/gaming,nDCG@10,0.46387904635825605
+bm25,BM25 k1=0.9 b=0.4,beir,beir/cqadupstack/gaming,R@100,0.7640669767179419
+bm25,BM25 k1=0.9 b=0.4,beir,beir/cqadupstack/gis,nDCG@10,0.274370122871203
+bm25,BM25 k1=0.9 b=0.4,beir,beir/cqadupstack/gis,R@100,0.5976235315218366
+bm25,BM25 k1=0.9 b=0.4,beir,beir/cqadupstack/mathematica,nDCG@10,0.20231882948336483
+bm25,BM25 k1=0.9 b=0.4,beir,beir/cqadupstack/mathematica,R@100,0.4893310462340313
+bm25,BM25 k1=0.9 b=0.4,beir,beir/cqadupstack/physics,nDCG@10,0.305835216423015
+bm25,BM25 k1=0.9 b=0.4,beir,beir/cqadupstack/physics,R@100,0.6314372583862479
+bm25,BM25 k1=0.9 b=0.4,beir,beir/cqadupstack/programmers,nDCG@10,0.25012038153791605
+bm25,BM25 k1=0.9 b=0.4,beir,beir/cqadupstack/programmers,R@100,0.5620396274669627
+bm25,BM25 k1=0.9 b=0.4,beir,beir/cqadupstack/stats,nDCG@10,0.24786751395134407
+bm25,BM25 k1=0.9 b=0.4,beir,beir/cqadupstack/stats,R@100,0.5182079338521056
+bm25,BM25 k1=0.9 b=0.4,beir,beir/cqadupstack/tex,nDCG@10,0.20784098410931062
+bm25,BM25 k1=0.9 b=0.4,beir,beir/cqadupstack/tex,R@100,0.47094953093461706
+bm25,BM25 k1=0.9 b=0.4,beir,beir/cqadupstack/unix,nDCG@10,0.2514969953355216
+bm25,BM25 k1=0.9 b=0.4,beir,beir/cqadupstack/unix,R@100,0.5225631657418038
+bm25,BM25 k1=0.9 b=0.4,beir,beir/cqadupstack/webmasters,nDCG@10,0.27912638913231286
+bm25,BM25 k1=0.9 b=0.4,beir,beir/cqadupstack/webmasters,R@100,0.5605726520055114
+bm25,BM25 k1=0.9 b=0.4,beir,beir/cqadupstack/wordpress,nDCG@10,0.2066329231739938
+bm25,BM25 k1=0.9 b=0.4,beir,beir/cqadupstack/wordpress,R@100,0.48964780474231306
+bm25,BM25 k1=0.9 b=0.4,beir,beir/dbpedia-entity,nDCG@10,0.3270337690537782
+bm25,BM25 k1=0.9 b=0.4,beir,beir/dbpedia-entity,R@100,0.48543046227850895
+bm25,BM25 k1=0.9 b=0.4,beir,beir/fever,nDCG@10,0.631111657721116
+bm25,BM25 k1=0.9 b=0.4,beir,beir/fever,R@100,0.9069841507960319
+bm25,BM25 k1=0.9 b=0.4,beir,beir/fiqa,nDCG@10,0.24284568923321773
+bm25,BM25 k1=0.9 b=0.4,beir,beir/fiqa,R@100,0.5417200854700854
+bm25,BM25 k1=0.9 b=0.4,beir,beir/hotpotqa,nDCG@10,0.6303030254820318
+bm25,BM25 k1=0.9 b=0.4,beir,beir/hotpotqa,R@100,0.7967589466576638
+bm25,BM25 k1=0.9 b=0.4,beir,beir/nfcorpus,nDCG@10,0.32714405593097523
+bm25,BM25 k1=0.9 b=0.4,beir,beir/nfcorpus,R@100,0.24809840230979208
+bm25,BM25 k1=0.9 b=0.4,beir,beir/nq,nDCG@10,0.30745613617113676
+bm25,BM25 k1=0.9 b=0.4,beir,beir/nq,R@100,0.7491792197759753
+bm25,BM25 k1=0.9 b=0.4,beir,beir/quora,nDCG@10,0.7125459763578937
+bm25,BM25 k1=0.9 b=0.4,beir,beir/quora,R@100,0.9473516342478983
+bm25,BM25 k1=0.9 b=0.4,beir,beir/scidocs,nDCG@10,0.15029735158421176
+bm25,BM25 k1=0.9 b=0.4,beir,beir/scidocs,R@100,0.3498
 bm25,BM25 k1=0.9 b=0.4,beir,beir/scifact,nDCG@10,0.6758697011122144
 bm25,BM25 k1=0.9 b=0.4,beir,beir/scifact,R@100,0.9186666666666667
+bm25,BM25 k1=0.9 b=0.4,beir,beir/trec-covid,nDCG@10,0.6245840664901651
+bm25,BM25 k1=0.9 b=0.4,beir,beir/trec-covid,R@100,0.12210671435697976
+bm25,BM25 k1=0.9 b=0.4,beir,beir/webis-touche2020,nDCG@10,0.4357352499127743
+bm25,BM25 k1=0.9 b=0.4,beir,beir/webis-touche2020,R@100,0.5647062755237064
+bm25,BM25 k1=0.9 b=0.4,bright,bright/aops,nDCG@10,0.06385135104253846
+bm25,BM25 k1=0.9 b=0.4,bright,bright/aops,R@100,0.19492706992706993
 bm25,BM25 k1=0.9 b=0.4,bright,bright/biology,nDCG@10,0.1710836241558114
 bm25,BM25 k1=0.9 b=0.4,bright,bright/biology,R@100,0.4299406719437379
+bm25,BM25 k1=0.9 b=0.4,bright,bright/earth-science,nDCG@10,0.2634333058180185
+bm25,BM25 k1=0.9 b=0.4,bright,bright/earth-science,R@100,0.5776441250068747
+bm25,BM25 k1=0.9 b=0.4,bright,bright/economics,nDCG@10,0.14935810534484784
+bm25,BM25 k1=0.9 b=0.4,bright,bright/economics,R@100,0.4309979294619978
+bm25,BM25 k1=0.9 b=0.4,bright,bright/leetcode,nDCG@10,0.2456467586706125
+bm25,BM25 k1=0.9 b=0.4,bright,bright/leetcode,R@100,0.45551643192488267
+bm25,BM25 k1=0.9 b=0.4,bright,bright/pony,nDCG@10,0.026062790468254788
+bm25,BM25 k1=0.9 b=0.4,bright,bright/pony,R@100,0.13572748908760474
+bm25,BM25 k1=0.9 b=0.4,bright,bright/psychology,nDCG@10,0.14891276897182815
+bm25,BM25 k1=0.9 b=0.4,bright,bright/psychology,R@100,0.3991364833482994
+bm25,BM25 k1=0.9 b=0.4,bright,bright/robotics,nDCG@10,0.1378597347561789
+bm25,BM25 k1=0.9 b=0.4,bright,bright/robotics,R@100,0.41756415783789114
+bm25,BM25 k1=0.9 b=0.4,bright,bright/stackoverflow,nDCG@10,0.16284369567473048
+bm25,BM25 k1=0.9 b=0.4,bright,bright/stackoverflow,R@100,0.4523665076491079
+bm25,BM25 k1=0.9 b=0.4,bright,bright/sustainable-living,nDCG@10,0.12397998018374154
+bm25,BM25 k1=0.9 b=0.4,bright,bright/sustainable-living,R@100,0.46577062839726235
+bm25,BM25 k1=0.9 b=0.4,bright,bright/theoremqa-questions,nDCG@10,0.0671677868431183
+bm25,BM25 k1=0.9 b=0.4,bright,bright/theoremqa-questions,R@100,0.15137457044673538
+bm25,BM25 k1=0.9 b=0.4,bright,bright/theoremqa-theorems,nDCG@10,0.02403057245686335
+bm25,BM25 k1=0.9 b=0.4,bright,bright/theoremqa-theorems,R@100,0.10745614035087718
+bm25,BM25 k1=0.9 b=0.4,coir,coir/apps,nDCG@10,0.04432438127815819
+bm25,BM25 k1=0.9 b=0.4,coir,coir/apps,R@100,0.1407702523240372
+bm25,BM25 k1=0.9 b=0.4,coir,coir/codefeedback-mt,nDCG@10,0.5454493569906473
+bm25,BM25 k1=0.9 b=0.4,coir,coir/codefeedback-mt,R@100,0.777058070347217
+bm25,BM25 k1=0.9 b=0.4,coir,coir/codefeedback-st,nDCG@10,0.6685637039822147
+bm25,BM25 k1=0.9 b=0.4,coir,coir/codefeedback-st,R@100,0.8942375263527759
+bm25,BM25 k1=0.9 b=0.4,coir,coir/codesearchnet-ccr/go,nDCG@10,0.7026201731920976
+bm25,BM25 k1=0.9 b=0.4,coir,coir/codesearchnet-ccr/go,R@100,0.9066732331937947
+bm25,BM25 k1=0.9 b=0.4,coir,coir/codesearchnet-ccr/java,nDCG@10,0.8674633794131344
+bm25,BM25 k1=0.9 b=0.4,coir,coir/codesearchnet-ccr/java,R@100,0.9899589228662711
+bm25,BM25 k1=0.9 b=0.4,coir,coir/codesearchnet-ccr/javascript,nDCG@10,0.735793366330743
+bm25,BM25 k1=0.9 b=0.4,coir,coir/codesearchnet-ccr/javascript,R@100,0.9219082345791553
+bm25,BM25 k1=0.9 b=0.4,coir,coir/codesearchnet-ccr/php,nDCG@10,0.8235938167962354
+bm25,BM25 k1=0.9 b=0.4,coir,coir/codesearchnet-ccr/php,R@100,0.9763094048808334
+bm25,BM25 k1=0.9 b=0.4,coir,coir/codesearchnet-ccr/python,nDCG@10,0.7749344515484957
+bm25,BM25 k1=0.9 b=0.4,coir,coir/codesearchnet-ccr/python,R@100,0.9705724627966216
+bm25,BM25 k1=0.9 b=0.4,coir,coir/codesearchnet-ccr/ruby,nDCG@10,0.8501715812418653
+bm25,BM25 k1=0.9 b=0.4,coir,coir/codesearchnet-ccr/ruby,R@100,0.9865186360031721
+bm25,BM25 k1=0.9 b=0.4,coir,coir/codesearchnet/go,nDCG@10,0.4244429964020028
+bm25,BM25 k1=0.9 b=0.4,coir,coir/codesearchnet/go,R@100,0.6926865304112287
+bm25,BM25 k1=0.9 b=0.4,coir,coir/codesearchnet/java,nDCG@10,0.38588192475196076
+bm25,BM25 k1=0.9 b=0.4,coir,coir/codesearchnet/java,R@100,0.6230944774075764
+bm25,BM25 k1=0.9 b=0.4,coir,coir/codesearchnet/javascript,nDCG@10,0.3426726924553027
+bm25,BM25 k1=0.9 b=0.4,coir,coir/codesearchnet/javascript,R@100,0.5724703737465816
+bm25,BM25 k1=0.9 b=0.4,coir,coir/codesearchnet/php,nDCG@10,0.3844789175939086
+bm25,BM25 k1=0.9 b=0.4,coir,coir/codesearchnet/php,R@100,0.6668331668331668
+bm25,BM25 k1=0.9 b=0.4,coir,coir/codesearchnet/python,nDCG@10,0.6049613027494637
+bm25,BM25 k1=0.9 b=0.4,coir,coir/codesearchnet/python,R@100,0.8094918889931626
+bm25,BM25 k1=0.9 b=0.4,coir,coir/codesearchnet/ruby,nDCG@10,0.3993113970362508
+bm25,BM25 k1=0.9 b=0.4,coir,coir/codesearchnet/ruby,R@100,0.7153053132434576
+bm25,BM25 k1=0.9 b=0.4,coir,coir/codetrans-contest,nDCG@10,0.7076237523245184
+bm25,BM25 k1=0.9 b=0.4,coir,coir/codetrans-contest,R@100,0.9909502262443439
+bm25,BM25 k1=0.9 b=0.4,coir,coir/codetrans-dl,nDCG@10,0.34321492584345736
+bm25,BM25 k1=0.9 b=0.4,coir,coir/codetrans-dl,R@100,0.9777777777777777
 bm25,BM25 k1=0.9 b=0.4,coir,coir/cosqa,nDCG@10,0.200745603915111
 bm25,BM25 k1=0.9 b=0.4,coir,coir/cosqa,R@100,0.654
+bm25,BM25 k1=0.9 b=0.4,coir,coir/stackoverflow-qa,nDCG@10,0.6350293321403006
+bm25,BM25 k1=0.9 b=0.4,coir,coir/stackoverflow-qa,R@100,0.8470411233701103
+bm25,BM25 k1=0.9 b=0.4,coir,coir/synthetic-text2sql,nDCG@10,0.4304545517504318
+bm25,BM25 k1=0.9 b=0.4,coir,coir/synthetic-text2sql,R@100,0.8837805503332764
+bm25,BM25 k1=0.9 b=0.4,miracl,miracl/ar,nDCG@10,0.42794265822466576
+bm25,BM25 k1=0.9 b=0.4,miracl,miracl/ar,R@100,0.78342212575638
+bm25,BM25 k1=0.9 b=0.4,miracl,miracl/bn,nDCG@10,0.4635848493586731
+bm25,BM25 k1=0.9 b=0.4,miracl,miracl/bn,R@100,0.8402193643069554
+bm25,BM25 k1=0.9 b=0.4,miracl,miracl/de,nDCG@10,0.15604368419368103
+bm25,BM25 k1=0.9 b=0.4,miracl,miracl/de,R@100,0.4450702576112412
+bm25,BM25 k1=0.9 b=0.4,miracl,miracl/en,nDCG@10,0.36015398804286325
+bm25,BM25 k1=0.9 b=0.4,miracl,miracl/en,R@100,0.8033138464928202
+bm25,BM25 k1=0.9 b=0.4,miracl,miracl/es,nDCG@10,0.26698063364255387
+bm25,BM25 k1=0.9 b=0.4,miracl,miracl/es,R@100,0.6023497207524985
+bm25,BM25 k1=0.9 b=0.4,miracl,miracl/fa,nDCG@10,0.3030387066511058
+bm25,BM25 k1=0.9 b=0.4,miracl,miracl/fa,R@100,0.6980899638336346
+bm25,BM25 k1=0.9 b=0.4,miracl,miracl/fi,nDCG@10,0.47923306301338764
+bm25,BM25 k1=0.9 b=0.4,miracl,miracl/fi,R@100,0.7890724713698749
+bm25,BM25 k1=0.9 b=0.4,miracl,miracl/fr,nDCG@10,0.14667686721053355
+bm25,BM25 k1=0.9 b=0.4,miracl,miracl/fr,R@100,0.5009787588504789
+bm25,BM25 k1=0.9 b=0.4,miracl,miracl/hi,nDCG@10,0.3831841118258168
+bm25,BM25 k1=0.9 b=0.4,miracl,miracl/hi,R@100,0.7660476190476191
+bm25,BM25 k1=0.9 b=0.4,miracl,miracl/id,nDCG@10,0.3931487092186592
+bm25,BM25 k1=0.9 b=0.4,miracl,miracl/id,R@100,0.8456311628186628
+bm25,BM25 k1=0.9 b=0.4,miracl,miracl/ja,nDCG@10,0.2866645541946547
+bm25,BM25 k1=0.9 b=0.4,miracl,miracl/ja,R@100,0.7078476207255276
+bm25,BM25 k1=0.9 b=0.4,miracl,miracl/ko,nDCG@10,0.2908663684541218
+bm25,BM25 k1=0.9 b=0.4,miracl,miracl/ko,R@100,0.4819198016381116
+bm25,BM25 k1=0.9 b=0.4,miracl,miracl/ru,nDCG@10,0.23148321233958868
+bm25,BM25 k1=0.9 b=0.4,miracl,miracl/ru,R@100,0.4868040860453001
 bm25,BM25 k1=0.9 b=0.4,miracl,miracl/sw,nDCG@10,0.46704320836493346
 bm25,BM25 k1=0.9 b=0.4,miracl,miracl/sw,R@100,0.8208432128037938
+bm25,BM25 k1=0.9 b=0.4,miracl,miracl/te,nDCG@10,0.4433422640937771
+bm25,BM25 k1=0.9 b=0.4,miracl,miracl/te,R@100,0.7914653784219001
+bm25,BM25 k1=0.9 b=0.4,miracl,miracl/th,nDCG@10,0.415627680475776
+bm25,BM25 k1=0.9 b=0.4,miracl,miracl/th,R@100,0.8110131228480477
+bm25,BM25 k1=0.9 b=0.4,miracl,miracl/yo,nDCG@10,0.5687200357787608
+bm25,BM25 k1=0.9 b=0.4,miracl,miracl/yo,R@100,0.8837535014005603
+bm25,BM25 k1=0.9 b=0.4,miracl,miracl/zh,nDCG@10,0.18030514666133665
+bm25,BM25 k1=0.9 b=0.4,miracl,miracl/zh,R@100,0.5599236641221373
+bm25,BM25 k1=0.9 b=0.4,msmarco,msmarco-dev,RR@10,0.18524605448674217
+bm25,BM25 k1=0.9 b=0.4,msmarco,msmarco-dev,nDCG@10,0.23135687571979208
+bm25,BM25 k1=0.9 b=0.4,msmarco,msmarco-dev,R@100,0.6707497612225407
 colbert,lightonai/colbertv2.0,beir,beir/scifact,nDCG@10,0.691479894843597
 colbert,lightonai/colbertv2.0,beir,beir/scifact,R@100,0.9253333333333335
 colbert,lightonai/colbertv2.0,coir,coir/cosqa,nDCG@10,0.1808060834345455
 colbert,lightonai/colbertv2.0,coir,coir/cosqa,R@100,0.628
 colbert,lightonai/mLateOn,miracl,miracl/sw,nDCG@10,0.5736713794985153
 colbert,lightonai/mLateOn,miracl,miracl/sw,R@100,0.870465323058684
+e5,intfloat/e5-base-v2,beir,beir/arguana,nDCG@10,0.44593802212172307
+e5,intfloat/e5-base-v2,beir,beir/arguana,R@100,0.9509246088193457
 e5,intfloat/e5-base-v2,beir,beir/scifact,nDCG@10,0.719132455674022
 e5,intfloat/e5-base-v2,beir,beir/scifact,R@100,0.9626666666666667
+e5,intfloat/e5-base-v2,bright,bright/biology,nDCG@10,0.028993988418088035
+e5,intfloat/e5-base-v2,bright,bright/biology,R@100,0.14795933073909567
+e5,intfloat/e5-base-v2,bright,bright/earth-science,nDCG@10,0.15616999636476578
+e5,intfloat/e5-base-v2,bright,bright/earth-science,R@100,0.34082866682118046
+e5,intfloat/e5-base-v2,bright,bright/economics,nDCG@10,0.0841896341367301
+e5,intfloat/e5-base-v2,bright,bright/economics,R@100,0.30867391493927887
+e5,intfloat/e5-base-v2,bright,bright/psychology,nDCG@10,0.08463510332042183
+e5,intfloat/e5-base-v2,bright,bright/psychology,R@100,0.2824840337329094
+e5,intfloat/e5-base-v2,bright,bright/robotics,nDCG@10,0.10413484514404006
+e5,intfloat/e5-base-v2,bright,bright/robotics,R@100,0.28682315010212506
+e5,intfloat/e5-base-v2,bright,bright/stackoverflow,nDCG@10,0.09002074556514021
+e5,intfloat/e5-base-v2,bright,bright/stackoverflow,R@100,0.45898589644558213
+e5,intfloat/e5-base-v2,coir,coir/apps,nDCG@10,0.11523756687621595
+e5,intfloat/e5-base-v2,coir,coir/apps,R@100,0.3434262948207171
+e5,intfloat/e5-base-v2,coir,coir/codefeedback-mt,nDCG@10,0.4156062639378099
+e5,intfloat/e5-base-v2,coir,coir/codefeedback-mt,R@100,0.682006477366875
+e5,intfloat/e5-base-v2,coir,coir/codefeedback-st,nDCG@10,0.745283511057293
+e5,intfloat/e5-base-v2,coir,coir/codefeedback-st,R@100,0.96454353797994
+e5,intfloat/e5-base-v2,coir,coir/codesearchnet/go,nDCG@10,0.69029495422684
+e5,intfloat/e5-base-v2,coir,coir/codesearchnet/go,R@100,0.9296971189362226
+e5,intfloat/e5-base-v2,coir,coir/codesearchnet/java,nDCG@10,0.560352356395517
+e5,intfloat/e5-base-v2,coir,coir/codesearchnet/java,R@100,0.847558192606116
+e5,intfloat/e5-base-v2,coir,coir/codesearchnet/javascript,nDCG@10,0.48371731808384794
+e5,intfloat/e5-base-v2,coir,coir/codesearchnet/javascript,R@100,0.7821330902461258
+e5,intfloat/e5-base-v2,coir,coir/codetrans-contest,nDCG@10,0.9860206869752053
+e5,intfloat/e5-base-v2,coir,coir/codetrans-contest,R@100,1.0
+e5,intfloat/e5-base-v2,coir,coir/codetrans-dl,nDCG@10,0.2187112697160093
+e5,intfloat/e5-base-v2,coir,coir/codetrans-dl,R@100,0.9166666666666666
 e5,intfloat/e5-base-v2,coir,coir/cosqa,nDCG@10,0.32391573111002875
 e5,intfloat/e5-base-v2,coir,coir/cosqa,R@100,0.904
+e5,intfloat/e5-base-v2,coir,coir/stackoverflow-qa,nDCG@10,0.8784934486745277
+e5,intfloat/e5-base-v2,coir,coir/stackoverflow-qa,R@100,0.9764292878635907
+e5,intfloat/e5-base-v2,coir,coir/synthetic-text2sql,nDCG@10,0.5239142057911184
+e5,intfloat/e5-base-v2,coir,coir/synthetic-text2sql,R@100,0.9709451375833191
 e5,intfloat/multilingual-e5-base,miracl,miracl/sw,nDCG@10,0.7127538509022464
 e5,intfloat/multilingual-e5-base,miracl,miracl/sw,R@100,0.9561845485082
 splade,opensearch-project/opensearch-neural-sparse-encoding-multilingual-v1,miracl,miracl/sw,nDCG@10,0.7659203716500936

@@ -5,7 +5,8 @@
 Writes experiments/summary.csv (one row per retriever x dataset x measure) and experiments/summary.md: one table
 per benchmark with every dataset as a row, each retriever as a column, and the benchmark average at the bottom.
 Averages are arithmetic means and follow each benchmark's convention:
-  * BEIR:   the 12 CQADupStack forums are first averaged into one CQADupStack score (BEIR paper).
+  * BEIR:   the 12 CQADupStack forums are first averaged into one CQADupStack row (BEIR paper). The average is
+            BEIR-13 (SPLADE++, ColBERTv2): every row except CQADupStack; MS MARCO and the licensed sets are not run.
   * CoIR:   the 6 CodeSearchNet and 6 CodeSearchNet-CCR languages are each averaged into one task (CoIR paper).
   * BRIGHT, MIRACL: plain mean over domains / languages.
   * MS MARCO: no average; dev, DL19 and DL20 are separate query sets over one corpus and are reported side by side.
@@ -25,6 +26,8 @@ RETRIEVER_ORDER = ['bm25', 'splade', 'e5', 'colbert']
 COLLAPSE = {'beir/cqadupstack/': 'beir/cqadupstack', 'coir/codesearchnet/': 'coir/codesearchnet',
             'coir/codesearchnet-ccr/': 'coir/codesearchnet-ccr'}
 NO_AVERAGE = {'msmarco'}
+NOT_AVERAGED = {'beir': {'beir/cqadupstack'}}  # rows shown but left out of the average (BEIR-13)
+AVERAGE_LABEL = {'beir': '**average (BEIR-13)**'}
 TITLES = {'beir': 'BEIR', 'msmarco': 'MS MARCO (dev, TREC DL 2019/2020)', 'bright': 'BRIGHT', 'miracl': 'MIRACL (dev)',
           'coir': 'CoIR'}
 
@@ -62,8 +65,9 @@ def group_table(df, group, measure):
     columns = [r for r in RETRIEVER_ORDER if r in table.columns] + sorted(set(table.columns) - set(RETRIEVER_ORDER))
     table = table.reindex(index=[r for r in expected if r in table.index], columns=columns)
     if len(expected) > 1 and group not in NO_AVERAGE:
-        complete = table.notna().sum() == len(expected)
-        table.loc['**average**'] = table.mean().where(complete)
+        averaged = [r for r in expected if r not in NOT_AVERAGED.get(group, ())]
+        part = table.reindex(averaged)
+        table.loc[AVERAGE_LABEL.get(group, '**average**')] = part.mean().where(part.notna().all())
     return table
 
 

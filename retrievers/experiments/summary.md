@@ -8,56 +8,172 @@ Models: **bm25**: BM25 k1=0.9 b=0.4; **colbert**: lightonai/colbertv2.0, lighton
 
 | dataset | bm25 | e5 | colbert |
 |---|---:|---:|---:|
-| beir/arguana | **0.4188** |  |  |
+| beir/arguana | 0.4188 | **0.4459** |  |
+| beir/climate-fever | **0.1664** |  |  |
+| beir/dbpedia-entity | **0.3270** |  |  |
+| beir/fever | **0.6311** |  |  |
+| beir/fiqa | **0.2428** |  |  |
+| beir/hotpotqa | **0.6303** |  |  |
+| beir/nfcorpus | **0.3271** |  |  |
+| beir/nq | **0.3075** |  |  |
+| beir/quora | **0.7125** |  |  |
+| beir/scidocs | **0.1503** |  |  |
 | beir/scifact | 0.6759 | **0.7191** | 0.6915 |
-| **average** |  |  |  |
+| beir/trec-covid | **0.6246** |  |  |
+| beir/webis-touche2020 | **0.4357** |  |  |
+| beir/cqadupstack | **0.2776** |  |  |
+| **average (BEIR-13)** | **0.4346** |  |  |
 
 ## BEIR: R@100
 
 | dataset | bm25 | e5 | colbert |
 |---|---:|---:|---:|
-| beir/arguana | **0.9545** |  |  |
+| beir/arguana | **0.9545** | 0.9509 |  |
+| beir/climate-fever | **0.4304** |  |  |
+| beir/dbpedia-entity | **0.4854** |  |  |
+| beir/fever | **0.9070** |  |  |
+| beir/fiqa | **0.5417** |  |  |
+| beir/hotpotqa | **0.7968** |  |  |
+| beir/nfcorpus | **0.2481** |  |  |
+| beir/nq | **0.7492** |  |  |
+| beir/quora | **0.9474** |  |  |
+| beir/scidocs | **0.3498** |  |  |
 | beir/scifact | 0.9187 | **0.9627** | 0.9253 |
-| **average** |  |  |  |
+| beir/trec-covid | **0.1221** |  |  |
+| beir/webis-touche2020 | **0.5647** |  |  |
+| beir/cqadupstack | **0.5664** |  |  |
+| **average (BEIR-13)** | **0.6166** |  |  |
+
+## MS MARCO (dev, TREC DL 2019/2020): RR@10
+
+| dataset | bm25 |
+|---|---:|
+| msmarco-dev | **0.1852** |
+
+## MS MARCO (dev, TREC DL 2019/2020): nDCG@10
+
+| dataset | bm25 |
+|---|---:|
+| msmarco-dev | **0.2314** |
+
+## MS MARCO (dev, TREC DL 2019/2020): R@100
+
+| dataset | bm25 |
+|---|---:|
+| msmarco-dev | **0.6707** |
 
 ## BRIGHT: nDCG@10
 
-| dataset | bm25 |
-|---|---:|
-| bright/biology | **0.1711** |
-| **average** |  |
+| dataset | bm25 | e5 |
+|---|---:|---:|
+| bright/biology | **0.1711** | 0.0290 |
+| bright/earth-science | **0.2634** | 0.1562 |
+| bright/economics | **0.1494** | 0.0842 |
+| bright/psychology | **0.1489** | 0.0846 |
+| bright/robotics | **0.1379** | 0.1041 |
+| bright/stackoverflow | **0.1628** | 0.0900 |
+| bright/sustainable-living | **0.1240** |  |
+| bright/pony | **0.0261** |  |
+| bright/leetcode | **0.2456** |  |
+| bright/aops | **0.0639** |  |
+| bright/theoremqa-theorems | **0.0240** |  |
+| bright/theoremqa-questions | **0.0672** |  |
+| **average** | **0.1320** |  |
 
 ## BRIGHT: R@100
 
-| dataset | bm25 |
-|---|---:|
-| bright/biology | **0.4299** |
-| **average** |  |
+| dataset | bm25 | e5 |
+|---|---:|---:|
+| bright/biology | **0.4299** | 0.1480 |
+| bright/earth-science | **0.5776** | 0.3408 |
+| bright/economics | **0.4310** | 0.3087 |
+| bright/psychology | **0.3991** | 0.2825 |
+| bright/robotics | **0.4176** | 0.2868 |
+| bright/stackoverflow | 0.4524 | **0.4590** |
+| bright/sustainable-living | **0.4658** |  |
+| bright/pony | **0.1357** |  |
+| bright/leetcode | **0.4555** |  |
+| bright/aops | **0.1949** |  |
+| bright/theoremqa-theorems | **0.1075** |  |
+| bright/theoremqa-questions | **0.1514** |  |
+| **average** | **0.3515** |  |
 
 ## MIRACL (dev): nDCG@10
 
 | dataset | bm25 | splade | e5 | colbert |
 |---|---:|---:|---:|---:|
+| miracl/ar | **0.4279** |  |  |  |
+| miracl/bn | **0.4636** |  |  |  |
+| miracl/de | **0.1560** |  |  |  |
+| miracl/en | **0.3602** |  |  |  |
+| miracl/es | **0.2670** |  |  |  |
+| miracl/fa | **0.3030** |  |  |  |
+| miracl/fi | **0.4792** |  |  |  |
+| miracl/fr | **0.1467** |  |  |  |
+| miracl/hi | **0.3832** |  |  |  |
+| miracl/id | **0.3931** |  |  |  |
+| miracl/ja | **0.2867** |  |  |  |
+| miracl/ko | **0.2909** |  |  |  |
+| miracl/ru | **0.2315** |  |  |  |
 | miracl/sw | 0.4670 | **0.7659** | 0.7128 | 0.5737 |
-| **average** |  |  |  |  |
+| miracl/te | **0.4433** |  |  |  |
+| miracl/th | **0.4156** |  |  |  |
+| miracl/yo | **0.5687** |  |  |  |
+| miracl/zh | **0.1803** |  |  |  |
+| **average** | **0.3480** |  |  |  |
 
 ## MIRACL (dev): R@100
 
 | dataset | bm25 | splade | e5 | colbert |
 |---|---:|---:|---:|---:|
+| miracl/ar | **0.7834** |  |  |  |
+| miracl/bn | **0.8402** |  |  |  |
+| miracl/de | **0.4451** |  |  |  |
+| miracl/en | **0.8033** |  |  |  |
+| miracl/es | **0.6023** |  |  |  |
+| miracl/fa | **0.6981** |  |  |  |
+| miracl/fi | **0.7891** |  |  |  |
+| miracl/fr | **0.5010** |  |  |  |
+| miracl/hi | **0.7660** |  |  |  |
+| miracl/id | **0.8456** |  |  |  |
+| miracl/ja | **0.7078** |  |  |  |
+| miracl/ko | **0.4819** |  |  |  |
+| miracl/ru | **0.4868** |  |  |  |
 | miracl/sw | 0.8208 | **0.9697** | 0.9562 | 0.8705 |
-| **average** |  |  |  |  |
+| miracl/te | **0.7915** |  |  |  |
+| miracl/th | **0.8110** |  |  |  |
+| miracl/yo | **0.8838** |  |  |  |
+| miracl/zh | **0.5599** |  |  |  |
+| **average** | **0.7010** |  |  |  |
 
 ## CoIR: nDCG@10
 
 | dataset | bm25 | e5 | colbert |
 |---|---:|---:|---:|
+| coir/apps | 0.0443 | **0.1152** |  |
 | coir/cosqa | 0.2007 | **0.3239** | 0.1808 |
-| **average** |  |  |  |
+| coir/synthetic-text2sql | 0.4305 | **0.5239** |  |
+| coir/codetrans-contest | 0.7076 | **0.9860** |  |
+| coir/codetrans-dl | **0.3432** | 0.2187 |  |
+| coir/stackoverflow-qa | 0.6350 | **0.8785** |  |
+| coir/codefeedback-st | 0.6686 | **0.7453** |  |
+| coir/codefeedback-mt | **0.5454** | 0.4156 |  |
+| coir/codesearchnet | **0.4236** |  |  |
+| coir/codesearchnet-ccr | **0.7924** |  |  |
+| **average** | **0.4791** |  |  |
 
 ## CoIR: R@100
 
 | dataset | bm25 | e5 | colbert |
 |---|---:|---:|---:|
+| coir/apps | 0.1408 | **0.3434** |  |
 | coir/cosqa | 0.6540 | **0.9040** | 0.6280 |
-| **average** |  |  |  |
+| coir/synthetic-text2sql | 0.8838 | **0.9709** |  |
+| coir/codetrans-contest | 0.9910 | **1.0000** |  |
+| coir/codetrans-dl | **0.9778** | 0.9167 |  |
+| coir/stackoverflow-qa | 0.8470 | **0.9764** |  |
+| coir/codefeedback-st | 0.8942 | **0.9645** |  |
+| coir/codefeedback-mt | **0.7771** | 0.6820 |  |
+| coir/codesearchnet | **0.6800** |  |  |
+| coir/codesearchnet-ccr | **0.9587** |  |  |
+| **average** | **0.7804** |  |  |
