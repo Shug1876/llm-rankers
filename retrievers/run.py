@@ -6,7 +6,7 @@
     python retrievers/run.py --list                                     # every dataset name and group
 
 Writes retrievers/experiments/<retriever>/<dataset>/{run.trec.gz, metrics.json, perquery.csv}; indexes go to
-retrievers/index/<retriever-model>/<dataset>.<ext> and are reused. A dataset whose metrics.json exists is skipped
+retrievers/index/<retriever-model>/<dataset>.<ext> (or the shared corpus, e.g. msmarco-passage) and are reused. A dataset whose metrics.json exists is skipped
 unless --overwrite_run is given.
 """
 import argparse

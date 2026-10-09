@@ -29,6 +29,10 @@ SPLADE (OpenSearch multilingual) 0.766, mE5 0.713, mLateOn 0.574. SPLADE-v3 on S
 Run BM25 first: it downloads every corpus to `IR_DATASETS_HOME`, so the GPU jobs afterwards do not race each
 other on the same download.
 
+`--dataset msmarco` runs dev, DL19 and DL20 over one shared index (`index/<retriever>-<model>/msmarco-passage.<ext>`).
+An index built before the DL sets were added is named `msmarco-dev.<ext>`; rename it instead of rebuilding, e.g.
+`mv retrievers/index/bm25-pisa-porter2/msmarco-dev.pisa retrievers/index/bm25-pisa-porter2/msmarco-passage.pisa`.
+
 ## 1. BM25 (PISA, CPU, 32 threads)
 
 ```bash

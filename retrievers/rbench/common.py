@@ -25,8 +25,8 @@ def slug(name):
     return name.replace('/', '_')
 
 
-def index_path(retriever_tag, dataset_name, suffix):
-    path = INDEX_DIR / retriever_tag / f'{slug(dataset_name)}.{suffix}'
+def index_path(retriever_tag, index_name, suffix):
+    path = INDEX_DIR / retriever_tag / f'{slug(index_name)}.{suffix}'
     path.parent.mkdir(parents=True, exist_ok=True)
     return path
 

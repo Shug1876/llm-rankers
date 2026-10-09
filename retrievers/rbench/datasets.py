@@ -11,6 +11,9 @@ import pandas as pd
 
 BEIR_MEASURES = ['nDCG@10', 'R@100']
 MSMARCO_MEASURES = ['RR@10', 'nDCG@10', 'R@100']
+# TREC DL passage qrels are graded 0-3; the binary measures count grade >= 2 as relevant (TREC DL convention)
+TREC_DL_MEASURES = ['nDCG@10', 'RR(rel=2)@10', 'AP(rel=2)@100', 'R(rel=2)@100']
+MSMARCO_CORPUS = 'msmarco-passage'  # dev/small, DL19 and DL20 query the same 8.8M passages: one index for all three
 
 BEIR = {  # name -> ir_datasets id (test split). Licensed sets (bioasq, signal1m, trec-news, robust04) are left out.
     'beir/arguana': 'beir/arguana',
@@ -68,6 +71,11 @@ class Bench:
     _qrels: Callable = field(repr=False)
     _exclusions: Optional[Callable] = field(default=None, repr=False)  # () -> {qid: set(docno)}
     drop_self_hits: bool = False
+    corpus: Optional[str] = None  # benches with the same corpus share one index; default: their own
+
+    @property
+    def index_name(self):
+        return self.corpus or self.name
 
     def corpus_iter(self):
         seen = set()
@@ -167,7 +175,10 @@ def _build_registry():
     for name, irds_id in BEIR.items():
         reg[name] = Bench(name, 'beir', 'en', BEIR_MEASURES, *_irds(irds_id), drop_self_hits=name in BEIR_SELF_HITS)
     reg['msmarco-dev'] = Bench('msmarco-dev', 'msmarco', 'en', MSMARCO_MEASURES,
-                               *_irds('msmarco-passage/dev/small'))
+                               *_irds('msmarco-passage/dev/small'), corpus=MSMARCO_CORPUS)
+    for year in ('2019', '2020'):
+        reg[f'msmarco-dl{year[2:]}'] = Bench(f'msmarco-dl{year[2:]}', 'msmarco', 'en', TREC_DL_MEASURES,
+                                             *_irds(f'msmarco-passage/trec-dl-{year}/judged'), corpus=MSMARCO_CORPUS)
     for d in BRIGHT:
         reg[f'bright/{d}'] = Bench(f'bright/{d}', 'bright', 'en', BEIR_MEASURES, *_irds(f'bright/{d}'),
                                    _exclusions=_bright_exclusions(d))

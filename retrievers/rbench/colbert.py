@@ -43,7 +43,7 @@ def _encoded_corpus(model, bench, chunk=8192):
 def retriever(bench, k, args):
     model_name = args.model or (COLBERT_EN if bench.lang in ('en', 'code') else COLBERT_ML)
     model = _model(model_name, args.batch_size or 128, args.colbert_query_length, args.colbert_doc_length)
-    path = index_path('colbert-' + model_name.split('/')[-1], bench.name, 'plaid')
+    path = index_path('colbert-' + model_name.split('/')[-1], bench.index_name, 'plaid')
     # use_triton=False: fast-plaid's update path (every PLAID add after the first) re-clusters outlier tokens
     # with fastkmeans' Triton kernel, which hit a device-side assert on beir/climate-fever; the torch path is safe
     index = PlaidIndex(str(path), verbose=False, use_triton=False)

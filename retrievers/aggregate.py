@@ -8,6 +8,7 @@ Averages are arithmetic means and follow each benchmark's convention:
   * BEIR:   the 12 CQADupStack forums are first averaged into one CQADupStack score (BEIR paper).
   * CoIR:   the 6 CodeSearchNet and 6 CodeSearchNet-CCR languages are each averaged into one task (CoIR paper).
   * BRIGHT, MIRACL: plain mean over domains / languages.
+  * MS MARCO: no average; dev, DL19 and DL20 are separate query sets over one corpus and are reported side by side.
 An average is only reported when every dataset of the benchmark is present for that retriever.
 """
 import json
@@ -23,7 +24,8 @@ from rbench.common import EXP_DIR  # noqa: E402
 RETRIEVER_ORDER = ['bm25', 'splade', 'e5', 'colbert']
 COLLAPSE = {'beir/cqadupstack/': 'beir/cqadupstack', 'coir/codesearchnet/': 'coir/codesearchnet',
             'coir/codesearchnet-ccr/': 'coir/codesearchnet-ccr'}
-TITLES = {'beir': 'BEIR', 'msmarco': 'MS MARCO dev (small)', 'bright': 'BRIGHT', 'miracl': 'MIRACL (dev)',
+NO_AVERAGE = {'msmarco'}
+TITLES = {'beir': 'BEIR', 'msmarco': 'MS MARCO (dev, TREC DL 2019/2020)', 'bright': 'BRIGHT', 'miracl': 'MIRACL (dev)',
           'coir': 'CoIR'}
 
 
@@ -59,7 +61,7 @@ def group_table(df, group, measure):
     # the four main retrievers first, then --model variants (e.g. splade-splade-cocondenser-ensembledistil)
     columns = [r for r in RETRIEVER_ORDER if r in table.columns] + sorted(set(table.columns) - set(RETRIEVER_ORDER))
     table = table.reindex(index=[r for r in expected if r in table.index], columns=columns)
-    if len(expected) > 1:
+    if len(expected) > 1 and group not in NO_AVERAGE:
         complete = table.notna().sum() == len(expected)
         table.loc['**average**'] = table.mean().where(complete)
     return table

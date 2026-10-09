@@ -52,7 +52,7 @@ def _encoded_corpus(model, bench, chunk=8192):
 def retriever(bench, k, args):
     model_name = args.model or (E5_EN if bench.lang in ('en', 'code') else E5_ML)
     model = _model(model_name, args.batch_size or 256)
-    path = index_path('e5-' + model_name.split('/')[-1], bench.name, 'flex')
+    path = index_path('e5-' + model_name.split('/')[-1], bench.index_name, 'flex')
     index = pyterrier_dr.FlexIndex(str(path), verbose=False)
     if not index.built():
         log.info('building %s', path)

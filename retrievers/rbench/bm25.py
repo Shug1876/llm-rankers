@@ -54,7 +54,7 @@ def _log_progress(it, every=500_000, what='docs'):
 def retriever(bench, k, args):
     native = bench.lang in ('en', 'code')
     tag = 'bm25-pisa-porter2' if native else 'bm25-pisa-unicode'
-    path = index_path(tag, bench.name, 'pisa')
+    path = index_path(tag, bench.index_name, 'pisa')
     threads = args.threads
     if native:
         index = PisaIndex(str(path), text_field='text', stemmer='porter2', stops='terrier', threads=threads)

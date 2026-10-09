@@ -101,7 +101,7 @@ def _encoded_corpus(enc, bench):
 def retriever(bench, k, args):
     model_name = args.model or (SPLADE_EN if bench.lang in ('en', 'code') else SPLADE_ML)
     tag = 'splade-' + model_name.split('/')[-1]
-    path = index_path(tag, bench.name, 'pisa')
+    path = index_path(tag, bench.index_name, 'pisa')
     index = PisaIndex(str(path), stemmer='none', stops='none', threads=args.threads)
     enc = _encoder(model_name, args.batch_size or (32 if model_name == SPLADE_ML else 64))
     if not index.built():

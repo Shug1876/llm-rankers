@@ -13,7 +13,7 @@ built on [PyTerrier](https://github.com/terrier-org/pyterrier):
 | Benchmark | Datasets (`--dataset` names) | Source | Measures |
 |---|---|---|---|
 | BEIR | 13 public sets + 12 CQADupStack forums (`beir/...`) | ir_datasets `beir/*` | nDCG@10, R@100 |
-| MS MARCO | `msmarco-dev` (dev/small, 6,980 queries) | ir_datasets `msmarco-passage/dev/small` | RR@10, nDCG@10, R@100 |
+| MS MARCO | `msmarco-dev` (dev/small, 6,980 queries), `msmarco-dl19` (43), `msmarco-dl20` (54); one shared index | ir_datasets `msmarco-passage/dev/small`, `msmarco-passage/trec-dl-{2019,2020}/judged` | dev: RR@10, nDCG@10, R@100; DL: nDCG@10, RR(rel=2)@10, AP(rel=2)@100, R(rel=2)@100 |
 | BRIGHT | 12 domains (`bright/...`) | ir_datasets `bright/*` + `excluded_ids` from `xlangai/BRIGHT` | nDCG@10, R@100 |
 | MIRACL | 18 languages, dev (`miracl/<lang>`) | ir_datasets `miracl/<lang>/dev` | nDCG@10, R@100 |
 | CoIR | 10 tasks; CodeSearchNet and CodeSearchNet-CCR per language (`coir/...`) | HF `CoIR-Retrieval/*` (test qrels) | nDCG@10, R@100 |
@@ -75,6 +75,7 @@ Submit from the repository root (SLURM writes `retrievers/logs/<job>-<id>.out`).
 ```
 retrievers/
   index/<retriever>-<model>/<dataset>.{pisa,flex,plaid}   gitignored, reused by later runs
+                                                          (the MS MARCO sets share msmarco-passage.<ext>)
   experiments/<retriever>/<dataset>/
       run.trec.gz        top-100 TREC run (rank from 1)
       metrics.json       measures, model, index path, query counts, timings
@@ -150,7 +151,10 @@ instead of encoding on the CPU. Known ways a run fails on a fresh pod:
 - MIRACL corpora are large (en 32.9M, de 15.9M, fr 14.6M, es 10.4M, ru 9.5M, ja 6.9M, zh 4.9M passages). Give the
   big languages their own jobs (execute_me.md does), and expect E5/ColBERT on MIRACL-en to need most of a day on
   one L40S. ColBERT PLAID indexes for the whole of MIRACL take hundreds of GB.
-- MS MARCO dev uses the full 8.8M-passage corpus.
+- MS MARCO dev, DL19 and DL20 query the full 8.8M-passage corpus through one index per retriever
+  (`index/<retriever>-<model>/msmarco-passage.<ext>`), built by whichever of the three runs first. Run them in one
+  job (`--dataset msmarco`) so two jobs never build it at once. DL qrels are graded 0-3; RR, AP and R count
+  grade >= 2 as relevant, the TREC DL convention.
 - The English-only models (splade-v3, e5-base-v2, colbertv2.0) are used on CoIR code too, since none of the
   requested models is code-specific.
 - OHSUMED is not included. The dataset registry ([rbench/datasets.py](rbench/datasets.py)) takes a new `Bench` in a
