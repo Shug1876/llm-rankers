@@ -1,0 +1,17 @@
+{
+  "dataset": "coir/codesearchnet/php",
+  "group": "coir",
+  "retriever": "e5",
+  "k": 100,
+  "num_queries": 14014,
+  "num_eval_queries": 14014,
+  "metrics": {
+    "nDCG@10": 0.5746330127462205,
+    "R@100": 0.880690737833595
+  },
+  "model": "intfloat/e5-base-v2",
+  "index": "/mnt/primary/llm-rankers/retrievers/index/e5-e5-base-v2/coir_codesearchnet_php.flex",
+  "search": "exact (numpy-cpu)",
+  "seconds_index_or_load": 7321.4,
+  "seconds_search": 1778.6
+}

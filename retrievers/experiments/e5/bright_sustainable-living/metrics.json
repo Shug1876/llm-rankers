@@ -1,0 +1,17 @@
+{
+  "dataset": "bright/sustainable-living",
+  "group": "bright",
+  "retriever": "e5",
+  "k": 100,
+  "num_queries": 108,
+  "num_eval_queries": 108,
+  "metrics": {
+    "nDCG@10": 0.08960636158982853,
+    "R@100": 0.32789290154894735
+  },
+  "model": "intfloat/e5-base-v2",
+  "index": "/mnt/primary/llm-rankers/retrievers/index/e5-e5-base-v2/bright_sustainable-living.flex",
+  "search": "exact (numpy-cpu)",
+  "seconds_index_or_load": 7432.8,
+  "seconds_search": 47.4
+}

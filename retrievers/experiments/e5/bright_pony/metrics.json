@@ -1,0 +1,17 @@
+{
+  "dataset": "bright/pony",
+  "group": "bright",
+  "retriever": "e5",
+  "k": 100,
+  "num_queries": 112,
+  "num_eval_queries": 112,
+  "metrics": {
+    "nDCG@10": 0.022944284595357616,
+    "R@100": 0.1246662174757549
+  },
+  "model": "intfloat/e5-base-v2",
+  "index": "/mnt/primary/llm-rankers/retrievers/index/e5-e5-base-v2/bright_pony.flex",
+  "search": "exact (numpy-cpu)",
+  "seconds_index_or_load": 914.1,
+  "seconds_search": 25.4
+}
