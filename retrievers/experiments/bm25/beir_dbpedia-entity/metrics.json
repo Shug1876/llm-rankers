@@ -1,0 +1,17 @@
+{
+  "dataset": "beir/dbpedia-entity",
+  "group": "beir",
+  "retriever": "bm25",
+  "k": 100,
+  "num_queries": 400,
+  "num_eval_queries": 400,
+  "metrics": {
+    "nDCG@10": 0.3270337690537782,
+    "R@100": 0.48543046227850895
+  },
+  "model": "BM25 k1=0.9 b=0.4",
+  "index": "/mnt/primary/llm-rankers/retrievers/index/bm25-pisa-porter2/beir_dbpedia-entity.pisa",
+  "tokenizer": "pisa porter2 + terrier stops",
+  "seconds_index_or_load": 631.6,
+  "seconds_search": 0.1
+}

@@ -1,0 +1,17 @@
+{
+  "dataset": "coir/stackoverflow-qa",
+  "group": "coir",
+  "retriever": "e5",
+  "k": 100,
+  "num_queries": 1994,
+  "num_eval_queries": 1994,
+  "metrics": {
+    "nDCG@10": 0.8784934486745277,
+    "R@100": 0.9764292878635907
+  },
+  "model": "intfloat/e5-base-v2",
+  "index": "/mnt/primary/llm-rankers/retrievers/index/e5-e5-base-v2/coir_stackoverflow-qa.flex",
+  "search": "exact (numpy-cpu)",
+  "seconds_index_or_load": 2609.2,
+  "seconds_search": 300.8
+}

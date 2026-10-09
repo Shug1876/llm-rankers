@@ -1,0 +1,17 @@
+{
+  "dataset": "miracl/ru",
+  "group": "miracl",
+  "retriever": "bm25",
+  "k": 100,
+  "num_queries": 1252,
+  "num_eval_queries": 1252,
+  "metrics": {
+    "nDCG@10": 0.23148321233958868,
+    "R@100": 0.4868040860453001
+  },
+  "model": "BM25 k1=0.9 b=0.4",
+  "index": "/mnt/primary/llm-rankers/retrievers/index/bm25-pisa-unicode/miracl_ru.pisa",
+  "tokenizer": "unicode words + CJK/Thai bigrams, no stemming",
+  "seconds_index_or_load": 4613.4,
+  "seconds_search": 0.9
+}

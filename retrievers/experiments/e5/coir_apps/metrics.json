@@ -1,0 +1,17 @@
+{
+  "dataset": "coir/apps",
+  "group": "coir",
+  "retriever": "e5",
+  "k": 100,
+  "num_queries": 3765,
+  "num_eval_queries": 3765,
+  "metrics": {
+    "nDCG@10": 0.11523756687621595,
+    "R@100": 0.3434262948207171
+  },
+  "model": "intfloat/e5-base-v2",
+  "index": "/mnt/primary/llm-rankers/retrievers/index/e5-e5-base-v2/coir_apps.flex",
+  "search": "exact (numpy-cpu)",
+  "seconds_index_or_load": 1067.9,
+  "seconds_search": 915.0
+}

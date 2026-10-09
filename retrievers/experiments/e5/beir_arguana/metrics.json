@@ -1,0 +1,17 @@
+{
+  "dataset": "beir/arguana",
+  "group": "beir",
+  "retriever": "e5",
+  "k": 100,
+  "num_queries": 1406,
+  "num_eval_queries": 1406,
+  "metrics": {
+    "nDCG@10": 0.44593802212172307,
+    "R@100": 0.9509246088193457
+  },
+  "model": "intfloat/e5-base-v2",
+  "index": "/mnt/primary/llm-rankers/retrievers/index/e5-e5-base-v2/beir_arguana.flex",
+  "search": "exact (numpy-cpu)",
+  "seconds_index_or_load": 721.3,
+  "seconds_search": 119.6
+}

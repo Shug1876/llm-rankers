@@ -1,0 +1,17 @@
+{
+  "dataset": "bright/robotics",
+  "group": "bright",
+  "retriever": "e5",
+  "k": 100,
+  "num_queries": 101,
+  "num_eval_queries": 101,
+  "metrics": {
+    "nDCG@10": 0.10413484514404006,
+    "R@100": 0.28682315010212506
+  },
+  "model": "intfloat/e5-base-v2",
+  "index": "/mnt/primary/llm-rankers/retrievers/index/e5-e5-base-v2/bright_robotics.flex",
+  "search": "exact (numpy-cpu)",
+  "seconds_index_or_load": 6260.0,
+  "seconds_search": 44.8
+}
