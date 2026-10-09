@@ -21,11 +21,20 @@ if [ ! -x "$VENV/bin/python" ]; then
   uv venv --python "$PYTHON_VERSION" "$VENV"
 fi
 uv pip install --python "$VENV/bin/python" -r retrievers/requirements.txt
+# pyterrier-pylate is only on GitHub and only ColBERT needs it: a pod that cannot reach github.com still gets
+# a venv that runs BM25, SPLADE and E5 (one failing requirement would otherwise abort the whole install).
+COLBERT=pyterrier_pylate
+if ! uv pip install --python "$VENV/bin/python" "pyterrier-pylate @ git+https://github.com/lightonai/pyterrier-pylate"; then
+  echo "WARNING: pyterrier-pylate not installed (github.com unreachable?); --retriever colbert will not run" >&2
+  COLBERT=
+fi
 
-"$VENV/bin/python" - <<'EOF'
-import importlib
-for name in ["pyterrier", "pyterrier_pisa", "pyterrier_splade", "pyterrier_dr", "pylate", "pyterrier_pylate",
+COLBERT=$COLBERT "$VENV/bin/python" - <<'EOF'
+import importlib, os
+for name in ["pyterrier", "pyterrier_pisa", "pyterrier_splade", "pyterrier_dr", "pylate", os.environ["COLBERT"],
              "ir_datasets", "ir_measures", "datasets", "torch"]:
+    if not name:
+        continue
     mod = importlib.import_module(name)
     print(f"{name:18s} {getattr(mod, '__version__', '?')}")
 import torch

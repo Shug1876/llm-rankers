@@ -19,5 +19,6 @@ VENV=${VENV:-/mnt/scratch/users/3148123l/venvs/retrievers}
 export HF_HOME=${HF_HOME:-/mnt/scratch/users/3148123l/hf_home}
 export IR_DATASETS_HOME=${IR_DATASETS_HOME:-/mnt/scratch/users/3148123l/ir_datasets}  # corpora are large; home has a 250G quota
 
-echo "host=$(hostname) cpus=${SLURM_CPUS_PER_TASK:-$(nproc)} gpu=${CUDA_VISIBLE_DEVICES:-none} args=$*"
+echo "host=$(hostname) cpus=${SLURM_CPUS_PER_TASK:-$(nproc)} gpu=$(nvidia-smi --query-gpu=name --format=csv,noheader 2>/dev/null | paste -sd, || true) args=$*"
+"$VENV/bin/python" -c "import torch; assert torch.cuda.is_available(), 'torch sees no GPU'"
 "$VENV/bin/python" retrievers/run.py "$@"

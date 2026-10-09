@@ -3,7 +3,6 @@ pyterrier-pisa
 pyterrier-splade
 pyterrier-dr
 pylate
-pyterrier-pylate @ git+https://github.com/lightonai/pyterrier-pylate
 ir_datasets>=0.6
 ir_measures
 datasets

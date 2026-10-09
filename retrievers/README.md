@@ -28,7 +28,9 @@ bash retrievers/setup.sh
 ```
 
 This creates the uv venv `/mnt/scratch/users/3148123l/venvs/retrievers` (Python 3.11; override with `VENV=...`),
-installs [requirements.txt](requirements.txt), checks every backend imports, and creates `retrievers/logs/`.
+installs [requirements.txt](requirements.txt), then `pyterrier-pylate` from GitHub in a separate step, checks every
+backend imports, and creates `retrievers/logs/`. `pyterrier-pylate` is not on PyPI; if GitHub is unreachable that
+step only prints a warning and the venv still runs BM25, SPLADE and E5 (only `--retriever colbert` needs it).
 Run it on the login node (it has internet). Then, once:
 
 ```bash
@@ -128,6 +130,20 @@ indexing logs a line every 500k documents and PISA prints its own build steps.
 | MIRACL sw | SPLADE (OpenSearch multilingual) | 0.766 | |
 | MIRACL sw | E5 (multilingual-e5-base) | 0.713 | |
 | MIRACL sw | ColBERT (mLateOn; sw is not one of its training languages) | 0.574 | |
+
+## Running on a new machine or pod
+
+`gpu.sbatch` prints the GPU name (`nvidia-smi`) and stops at once with `torch sees no GPU` if torch cannot use it,
+instead of encoding on the CPU. Known ways a run fails on a fresh pod:
+
+| Symptom | Cause | Fix |
+|---|---|---|
+| `ModuleNotFoundError: No module named 'ir_measures'` (or any other package) | `setup.sh` failed, leaving an empty venv. Before the split install, one unreachable GitHub requirement (`pyterrier-pylate`) aborted the whole `uv pip install` | re-run `bash retrievers/setup.sh` and check it ends with `venv ready`; do not start jobs if it fails |
+| `Failed to connect to github.com port 443` during setup | the pod has no route to GitHub | BM25/SPLADE/E5 still install; for ColBERT open GitHub access, or build a wheel elsewhere (`uv build --wheel git+https://github.com/lightonai/pyterrier-pylate -o wheels/`) and `uv pip install` it |
+| `401 ... Cannot access gated repo ... naver/splade-v3` | no Hugging Face login on that machine | `export HF_TOKEN=...` or `$VENV/bin/hf auth login`, with the splade-v3 licence accepted |
+| `torch sees no GPU` | the venv's torch is a CUDA 13 build (`+cu130`) and needs a matching driver, or no GPU is attached | `nvidia-smi` on the pod; with an older driver install a torch build for that CUDA version |
+| `gpu=` empty in the first log line | no GPU visible to the job (outside SLURM `CUDA_VISIBLE_DEVICES` is usually unset, which is fine) | check `nvidia-smi` |
+| permission or "no such directory" errors under `/mnt/scratch/...` | `VENV`, `HF_HOME` and `IR_DATASETS_HOME` default to this cluster's scratch paths | export the three variables to paths that exist and are writable on that machine |
 
 ## Scale and caveats
 
