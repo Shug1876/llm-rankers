@@ -466,12 +466,34 @@ class JevPointwiseLlmRanker(JevRanker):
 
     METHODS = ('noul', 'score', 'cookbook', 'cookbook_score', 'trec', 'umbrela', 'grade4', 'scenario')
     GRADE4 = {'exact': 3, 'partial': 2, 'related': 1, 'irrelevant': 0}
+    # graded methods: answer key -> grade on the scale the prompt defines. The local model answers a `score` on a fixed
+    # 0-5 scale whatever the prompt says; keys missing here (4, 5) are levels the prompt never defined.
+    GRADED = {'score': {str(i): i for i in range(4)}, 'cookbook_score': {str(i): i for i in range(4)},
+              'trec': {str(i): i for i in range(4)}, 'umbrela': {str(i): i for i in range(4)}, 'grade4': GRADE4}
 
     def __init__(self, client, method='noul', num_workers=4):
         super().__init__(client, num_workers)
         if method not in self.METHODS:
             raise ValueError(f"method must be one of {', '.join(self.METHODS)}")
         self.method = method
+        self._last = threading.local()  # the answer distribution of this thread's latest request
+        self.distributions = {}         # docid -> answer distribution, for the last rerank() call
+
+    def _ask(self, state, qs):
+        """system_one, keeping the full answer distribution (a noul becomes {'false': 1 - p, 'true': p})."""
+        result = self.client.system_one(state, qs)
+        a = next(iter(result['answers'].values()))
+        self._last.dist = a['probabilities'] if 'probabilities' in a else {'false': 1 - a['noul'], 'true': a['noul']}
+        return result
+
+    def _graded(self, answer):
+        """Expected grade on the scale the prompt defines (0-3). The local model answers a `score` on 0-5: its mass on
+        levels 4-5 is dropped and the rest renormalised. The hosted API answers on 0-3 already: its score is kept."""
+        levels, probs = self.GRADED[self.method], answer.get('probabilities') or {}
+        inside = sum(float(v) for k, v in probs.items() if k in levels)
+        if not probs or inside <= 0 or abs(sum(float(v) for v in probs.values()) - inside) < 1e-9:
+            return answer['score']
+        return sum(levels[k] * float(v) for k, v in probs.items() if k in levels) / inside
 
     def _score_one(self, query, doc):
         # grade4 / scenario: the open JEV models' training format (distill corpus, domain retrieval_relevance): a prose
@@ -480,9 +502,9 @@ class JevPointwiseLlmRanker(JevRanker):
             state = f'A search engine returned this passage for the query "{query}". Passage: {doc.text}'
             if self.method == 'scenario':
                 qs = {'relevant': noul('Is this scenario one where: this passage is relevant to the query?')}
-                return self.client.system_one(state, qs)['answers']['relevant']['noul']
+                return self._ask(state, qs)['answers']['relevant']['noul']
             qs = {'relevance': choice('Relevance for this scenario.', {k: None for k in self.GRADE4})}
-            probs = self.client.system_one(state, qs)['answers']['relevance']['probabilities']
+            probs = self._ask(state, qs)['answers']['relevance']['probabilities']
             return sum(w * float(probs.get(k, 0.0)) for k, w in self.GRADE4.items())
         if self.method == 'trec':  # the TREC DL assessor scale, verbatim, with the NIST note on 'Related'
             state = {'query': query, 'passage': doc.text}
@@ -495,7 +517,7 @@ class JevPointwiseLlmRanker(JevRanker):
                  'Highly relevant: The passage has some answer for the query, but the answer may be a bit unclear, '
                  'or hidden amongst extraneous information.',
                  'Perfectly relevant: The passage is dedicated to the query and contains the exact answer.'])}
-            return self.client.system_one(state, qs)['answers']['relevance']['score']
+            return self._graded(self._ask(state, qs)['answers']['relevance'])
         if self.method == 'umbrela':  # the Bing / UMBRELA LLM-assessor prompt (Thomas et al. 2023; Upadhyay et al. 2024)
             state = {'query': query, 'passage': doc.text}
             qs = {'relevance': score(
@@ -516,7 +538,7 @@ class JevPointwiseLlmRanker(JevRanker):
                  '2: the passage has some answer for the query, but the answer may be a bit unclear, or hidden '
                  'amongst extraneous information',
                  '3: the passage is dedicated to the query and contains the exact answer'])}
-            return self.client.system_one(state, qs)['answers']['relevance']['score']
+            return self._graded(self._ask(state, qs)['answers']['relevance'])
         if self.method == 'cookbook_score':  # cookbook wording + the 4 graded levels
             state = {'query': query, 'candidate_passage': doc.text}
             qs = {'relevance': score(
@@ -530,7 +552,7 @@ class JevPointwiseLlmRanker(JevRanker):
                  'it is unclear or buried among other content.',
                  'Perfectly relevant: the candidate passage is dedicated to the query and states the specific '
                  'information it asks for.'])}
-            return self.client.system_one(state, qs)['answers']['relevance']['score']
+            return self._graded(self._ask(state, qs)['answers']['relevance'])
         if self.method == 'cookbook':
             state = {'query': query, 'candidate_passage': doc.text}
             qs = {'relevant': noul(
@@ -540,20 +562,24 @@ class JevPointwiseLlmRanker(JevRanker):
                 true='The candidate passage states or explains the specific fact, answer or procedure the query asks for.',
                 false='The candidate passage is merely on a similar topic; it does not supply the specific '
                       'information the query asks for.')}
-            return self.client.system_one(state, qs)['answers']['relevant']['noul']
+            return self._ask(state, qs)['answers']['relevant']['noul']
         state = {'query': query, 'passage': doc.text}
         if self.method == 'noul':
             qs = {'relevant': noul('The passage answers the query.',
                                    true='The passage contains the information the query is asking for.',
                                    false='The passage does not answer the query, even if it is on a related topic.')}
-            return self.client.system_one(state, qs)['answers']['relevant']['noul']
+            return self._ask(state, qs)['answers']['relevant']['noul']
         qs = {'relevance': score('How relevant is the passage to the query?', TREC_DL_GRADED_LEVELS)}
-        return self.client.system_one(state, qs)['answers']['relevance']['score']
+        return self._graded(self._ask(state, qs)['answers']['relevance'])
 
     def rerank(self, query: str, ranking: List[SearchResult]) -> List[SearchResult]:
         self._begin()
-        for doc, s in zip(ranking, self._pool.map(lambda d: self._score_one(query, d), ranking)):
+        def score_doc(d):
+            return self._score_one(query, d), self._last.dist
+        self.distributions = {}
+        for doc, (s, dist) in zip(ranking, self._pool.map(score_doc, ranking)):
             doc.score = float(s)
+            self.distributions[doc.docid] = dist
         self.total_compare = len(ranking)
         self._end()
         return sorted(ranking, key=lambda x: x.score, reverse=True)
