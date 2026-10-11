@@ -1,0 +1,17 @@
+{
+  "dataset": "coir/codesearchnet-ccr/php",
+  "group": "coir",
+  "retriever": "e5",
+  "k": 100,
+  "num_queries": 14014,
+  "num_eval_queries": 14014,
+  "metrics": {
+    "nDCG@10": 0.9122154203310856,
+    "R@100": 0.9979306407877836
+  },
+  "model": "intfloat/e5-base-v2",
+  "index": "/mnt/primary/llm-rankers/retrievers/index/e5-e5-base-v2/coir_codesearchnet-ccr_php.flex",
+  "search": "exact (torch-fp16-gpu)",
+  "seconds_index_or_load": 153.6,
+  "seconds_search": 9.3
+}

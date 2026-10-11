@@ -1,0 +1,17 @@
+{
+  "dataset": "bright/theoremqa-theorems",
+  "group": "bright",
+  "retriever": "e5",
+  "k": 100,
+  "num_queries": 76,
+  "num_eval_queries": 76,
+  "metrics": {
+    "nDCG@10": 0.05285549604947993,
+    "R@100": 0.293859649122807
+  },
+  "model": "intfloat/e5-base-v2",
+  "index": "/mnt/primary/llm-rankers/retrievers/index/e5-e5-base-v2/bright_theoremqa-theorems.flex",
+  "search": "exact (torch-fp16-gpu)",
+  "seconds_index_or_load": 41.3,
+  "seconds_search": 0.1
+}

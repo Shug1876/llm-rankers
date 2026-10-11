@@ -1,0 +1,17 @@
+{
+  "dataset": "bright/leetcode",
+  "group": "bright",
+  "retriever": "e5",
+  "k": 100,
+  "num_queries": 142,
+  "num_eval_queries": 142,
+  "metrics": {
+    "nDCG@10": 0.23906624618882194,
+    "R@100": 0.5065727699530517
+  },
+  "model": "intfloat/e5-base-v2",
+  "index": "/mnt/primary/llm-rankers/retrievers/index/e5-e5-base-v2/bright_leetcode.flex",
+  "search": "exact (torch-fp16-gpu)",
+  "seconds_index_or_load": 558.8,
+  "seconds_search": 0.4
+}

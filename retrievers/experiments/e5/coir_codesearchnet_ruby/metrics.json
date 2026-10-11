@@ -1,0 +1,17 @@
+{
+  "dataset": "coir/codesearchnet/ruby",
+  "group": "coir",
+  "retriever": "e5",
+  "k": 100,
+  "num_queries": 1261,
+  "num_eval_queries": 1261,
+  "metrics": {
+    "nDCG@10": 0.5162724710695297,
+    "R@100": 0.8271213322759714
+  },
+  "model": "intfloat/e5-base-v2",
+  "index": "/mnt/primary/llm-rankers/retrievers/index/e5-e5-base-v2/coir_codesearchnet_ruby.flex",
+  "search": "exact (torch-fp16-gpu)",
+  "seconds_index_or_load": 53.2,
+  "seconds_search": 1.1
+}
