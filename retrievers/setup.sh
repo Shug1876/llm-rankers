@@ -25,12 +25,20 @@ fi
 if [ ! -x "$VENV/bin/python" ]; then
   uv venv --python "$PYTHON_VERSION" "$VENV"
 fi
-if [ -n "$TORCH_INDEX" ]; then
-  # first, so the requirements below see torch already satisfied and do not pull PyPI's newer-CUDA build over it;
-  # this also replaces a wrong-CUDA torch left in an existing venv
-  uv pip install --python "$VENV/bin/python" torch --index-url "$TORCH_INDEX"
-fi
+# Make the venv's torch the build from $TORCH_INDEX (local version tag, e.g. +cu121). A plain `uv pip install torch`
+# is a no-op when any torch is already installed, so a wrong-CUDA torch from an earlier setup must be forced out.
+ensure_torch() {
+  [ -n "$TORCH_INDEX" ] || return 0
+  local tag=${TORCH_INDEX##*/} cur
+  cur=$("$VENV/bin/python" -c "import torch; print(torch.__version__)" 2>/dev/null || true)
+  if [[ "$cur" != *"+$tag" ]]; then
+    echo "torch is '${cur:-not installed}', want a +$tag build: installing from $TORCH_INDEX"
+    uv pip install --python "$VENV/bin/python" --reinstall-package torch torch --index-url "$TORCH_INDEX"
+  fi
+}
+ensure_torch
 uv pip install --python "$VENV/bin/python" -r retrievers/requirements.txt
+ensure_torch   # a requirement that wants a newer torch can pull PyPI's default build back in
 # pyterrier-pylate is only on GitHub and only ColBERT needs it: a pod that cannot reach github.com still gets
 # a venv that runs BM25, SPLADE and E5 (one failing requirement would otherwise abort the whole install).
 COLBERT=pyterrier_pylate
@@ -38,6 +46,7 @@ if ! uv pip install --python "$VENV/bin/python" "pyterrier-pylate @ git+https://
   echo "WARNING: pyterrier-pylate not installed (github.com unreachable?); --retriever colbert will not run" >&2
   COLBERT=
 fi
+ensure_torch
 
 COLBERT=$COLBERT "$VENV/bin/python" - <<'EOF'
 import importlib, os
