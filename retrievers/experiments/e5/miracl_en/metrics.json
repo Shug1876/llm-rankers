@@ -1,0 +1,17 @@
+{
+  "dataset": "miracl/en",
+  "group": "miracl",
+  "retriever": "e5",
+  "k": 100,
+  "num_queries": 799,
+  "num_eval_queries": 799,
+  "metrics": {
+    "nDCG@10": 0.49566337133602667,
+    "R@100": 0.8656052298417756
+  },
+  "model": "intfloat/e5-base-v2",
+  "index": "/mnt/primary/llm-rankers/retrievers/index/e5-e5-base-v2/miracl_en.flex",
+  "search": "exact (numpy-cpu)",
+  "seconds_index_or_load": 22461.1,
+  "seconds_search": 180.7
+}
