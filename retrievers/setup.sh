@@ -13,9 +13,11 @@ VENV=${VENV:-/mnt/scratch/users/3148123l/venvs/retrievers}
 PYTHON_VERSION=${PYTHON_VERSION:-3.11}
 # PyPI's default torch wheel is built for a new CUDA (12.8/13.0) and refuses to start on an older driver
 # ("NVIDIA driver on your system is too old (found version 12020)"). Pick the wheel index to match the cluster's
-# driver (`nvidia-smi` shows its max CUDA version): cu121 runs on any driver >= 12.1, e.g. the 12.2 one here.
+# driver (`nvidia-smi` shows its max CUDA version). cu124 runs on any CUDA 12.x driver >= 525 (minor-version
+# compatibility), e.g. the 12.2 one here, and carries torch 2.6, the minimum transformers accepts for loading
+# pytorch_model.bin checkpoints (naver/splade-v3 has no safetensors; the cu121 index stops at torch 2.5.1).
 # Set TORCH_INDEX= (empty) to use PyPI's default build instead.
-TORCH_INDEX=${TORCH_INDEX-https://download.pytorch.org/whl/cu121}
+TORCH_INDEX=${TORCH_INDEX-https://download.pytorch.org/whl/cu124}
 
 if ! command -v uv >/dev/null; then
   echo "uv not found: curl -LsSf https://astral.sh/uv/install.sh | sh" >&2
@@ -25,7 +27,7 @@ fi
 if [ ! -x "$VENV/bin/python" ]; then
   uv venv --python "$PYTHON_VERSION" "$VENV"
 fi
-# Make the venv's torch the build from $TORCH_INDEX (local version tag, e.g. +cu121). A plain `uv pip install torch`
+# Make the venv's torch the build from $TORCH_INDEX (local version tag, e.g. +cu124). A plain `uv pip install torch`
 # is a no-op when any torch is already installed, so a wrong-CUDA torch from an earlier setup must be forced out.
 ensure_torch() {
   [ -n "$TORCH_INDEX" ] || return 0
