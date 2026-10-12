@@ -1,0 +1,17 @@
+{
+  "dataset": "beir/nfcorpus",
+  "group": "beir",
+  "retriever": "splade",
+  "k": 100,
+  "num_queries": 323,
+  "num_eval_queries": 323,
+  "metrics": {
+    "nDCG@10": 0.3632547384119976,
+    "R@100": 0.29573005473027286
+  },
+  "model": "naver/splade-v3",
+  "index": "/mnt/primary/llm-rankers/retrievers/index/splade-splade-v3/beir_nfcorpus.pisa",
+  "max_length": 512,
+  "seconds_index_or_load": 43.9,
+  "seconds_search": 0.2
+}
