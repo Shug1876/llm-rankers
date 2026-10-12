@@ -1,0 +1,17 @@
+{
+  "dataset": "beir/trec-covid",
+  "group": "beir",
+  "retriever": "splade",
+  "k": 100,
+  "num_queries": 50,
+  "num_eval_queries": 50,
+  "metrics": {
+    "nDCG@10": 0.7324000125020356,
+    "R@100": 0.14139389502139021
+  },
+  "model": "naver/splade-v3",
+  "index": "/mnt/primary/llm-rankers/retrievers/index/splade-splade-v3/beir_trec-covid.pisa",
+  "max_length": 512,
+  "seconds_index_or_load": 985.3,
+  "seconds_search": 0.6
+}
