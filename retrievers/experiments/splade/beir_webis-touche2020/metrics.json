@@ -1,0 +1,17 @@
+{
+  "dataset": "beir/webis-touche2020",
+  "group": "beir",
+  "retriever": "splade",
+  "k": 100,
+  "num_queries": 49,
+  "num_eval_queries": 49,
+  "metrics": {
+    "nDCG@10": 0.31112622927843825,
+    "R@100": 0.5151666303735775
+  },
+  "model": "naver/splade-v3",
+  "index": "/mnt/primary/llm-rankers/retrievers/index/splade-splade-v3/beir_webis-touche2020.pisa",
+  "max_length": 512,
+  "seconds_index_or_load": 1826.2,
+  "seconds_search": 0.3
+}
