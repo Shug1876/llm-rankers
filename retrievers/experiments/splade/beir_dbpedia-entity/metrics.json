@@ -1,0 +1,17 @@
+{
+  "dataset": "beir/dbpedia-entity",
+  "group": "beir",
+  "retriever": "splade",
+  "k": 100,
+  "num_queries": 400,
+  "num_eval_queries": 400,
+  "metrics": {
+    "nDCG@10": 0.4508971922984182,
+    "R@100": 0.570837064963265
+  },
+  "model": "naver/splade-v3",
+  "index": "/mnt/primary/llm-rankers/retrievers/index/splade-splade-v3/beir_dbpedia-entity.pisa",
+  "max_length": 512,
+  "seconds_index_or_load": 20522.0,
+  "seconds_search": 4.9
+}

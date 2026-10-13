@@ -1,0 +1,17 @@
+{
+  "dataset": "bright/biology",
+  "group": "bright",
+  "retriever": "splade",
+  "k": 100,
+  "num_queries": 103,
+  "num_eval_queries": 103,
+  "metrics": {
+    "nDCG@10": 0.2115059472486732,
+    "R@100": 0.5577902935082291
+  },
+  "model": "naver/splade-v3",
+  "index": "/mnt/primary/llm-rankers/retrievers/index/splade-splade-v3/bright_biology.pisa",
+  "max_length": 512,
+  "seconds_index_or_load": 199.3,
+  "seconds_search": 0.3
+}

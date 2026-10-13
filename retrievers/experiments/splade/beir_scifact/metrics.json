@@ -1,0 +1,17 @@
+{
+  "dataset": "beir/scifact",
+  "group": "beir",
+  "retriever": "splade",
+  "k": 100,
+  "num_queries": 300,
+  "num_eval_queries": 300,
+  "metrics": {
+    "nDCG@10": 0.7168491288624227,
+    "R@100": 0.936
+  },
+  "model": "naver/splade-v3",
+  "index": "/mnt/primary/llm-rankers/retrievers/index/splade-splade-v3/beir_scifact.pisa",
+  "max_length": 512,
+  "seconds_index_or_load": 71.1,
+  "seconds_search": 0.2
+}
