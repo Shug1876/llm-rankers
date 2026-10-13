@@ -1,0 +1,17 @@
+{
+  "dataset": "coir/cosqa",
+  "group": "coir",
+  "retriever": "splade",
+  "k": 100,
+  "num_queries": 500,
+  "num_eval_queries": 500,
+  "metrics": {
+    "nDCG@10": 0.24255521281820286,
+    "R@100": 0.774
+  },
+  "model": "naver/splade-v3",
+  "index": "/mnt/primary/llm-rankers/retrievers/index/splade-splade-v3/coir_cosqa.pisa",
+  "max_length": 512,
+  "seconds_index_or_load": 115.0,
+  "seconds_search": 0.2
+}

@@ -1,0 +1,17 @@
+{
+  "dataset": "bright/leetcode",
+  "group": "bright",
+  "retriever": "splade",
+  "k": 100,
+  "num_queries": 142,
+  "num_eval_queries": 142,
+  "metrics": {
+    "nDCG@10": 0.2597532991689143,
+    "R@100": 0.5018779342723004
+  },
+  "model": "naver/splade-v3",
+  "index": "/mnt/primary/llm-rankers/retrievers/index/splade-splade-v3/bright_leetcode.pisa",
+  "max_length": 512,
+  "seconds_index_or_load": 1387.8,
+  "seconds_search": 14.4
+}

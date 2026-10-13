@@ -1,0 +1,17 @@
+{
+  "dataset": "bright/earth-science",
+  "group": "bright",
+  "retriever": "splade",
+  "k": 100,
+  "num_queries": 116,
+  "num_eval_queries": 116,
+  "metrics": {
+    "nDCG@10": 0.26755516559816,
+    "R@100": 0.5776335021854532
+  },
+  "model": "naver/splade-v3",
+  "index": "/mnt/primary/llm-rankers/retrievers/index/splade-splade-v3/bright_earth-science.pisa",
+  "max_length": 512,
+  "seconds_index_or_load": 1104.1,
+  "seconds_search": 0.7
+}
